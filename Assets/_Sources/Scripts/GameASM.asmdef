@@ -1,0 +1,19 @@
+{
+    "name": "GameASM",
+    "rootNamespace": "",
+    "references": [
+        "GUID:75e842af8dd59fc4fbdd8bb2fcc53657",
+        "GUID:40953d266f50aa142b7447c2d72c409f",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:593a5b492d29ac6448b1ebf7f035ef33"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
