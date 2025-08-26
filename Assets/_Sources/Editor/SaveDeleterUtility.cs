@@ -6,7 +6,7 @@ namespace KaanUtilities.Editor
 {
     public static class SaveDeleterUtility
     {
-        [MenuItem("CerberusFramework/Delete Local Save", false, 101)]
+        [MenuItem("UnicoCaseStudy/Delete Local Save", false, 101)]
         public static void SaveDeleter()
         {
             var filePath = Application.persistentDataPath;

@@ -7,7 +7,7 @@ namespace KaanUtilities.Editor
     public class SceneLoaderMenuItem
     {
 
-        [MenuItem("CerberusFramework/Scenes/LoadingScene", false, 50)]
+        [MenuItem("UnicoCaseStudy/Scenes/LoadingScene", false, 50)]
         public static void LoadLoadingScene()
         {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
@@ -16,7 +16,7 @@ namespace KaanUtilities.Editor
             }
         }
 
-        [MenuItem("CerberusFramework/Scenes/MainMenuScene", false, 51)]
+        [MenuItem("UnicoCaseStudy/Scenes/MainMenuScene", false, 51)]
         public static void LoadMainScene()
         {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
@@ -25,7 +25,7 @@ namespace KaanUtilities.Editor
             }
         }
 
-        [MenuItem("CerberusFramework/Scenes/LevelScene", false, 52)]
+        [MenuItem("UnicoCaseStudy/Scenes/LevelScene", false, 52)]
         public static void LoadLevelScene()
         {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
