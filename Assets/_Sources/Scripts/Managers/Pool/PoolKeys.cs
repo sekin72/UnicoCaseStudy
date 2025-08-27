@@ -17,5 +17,10 @@
         TextTween = 150,
 
         ExternalParticlesSystemView = 500,
+        EnvironmentCreatorSystemView = 501,
+
+        Tile = 600,
+        GroundTile = 601,
+        PathTile = 602,
     }
 }

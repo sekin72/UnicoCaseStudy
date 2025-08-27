@@ -8,7 +8,7 @@ using UnityEngine;
 namespace UnicoCaseStudy.Gameplay.Systems.ExternalParticles
 {
     [CreateAssetMenu(fileName = "ExternalParticlesSystem", menuName = "UnicoCaseStudy/Systems/ExternalParticlesSystem", order = 3)]
-    public class ExternalParticlesSystem : GameSystem
+    public sealed class ExternalParticlesSystem : GameSystem
     {
         private ExternalParticlesSystemView _view;
         private PoolManager _poolManager;

@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using UnicoCaseStudy.Managers.Gameplay;
 
 namespace UnicoCaseStudy.UI.Popups.Fail
 {
@@ -22,7 +23,7 @@ namespace UnicoCaseStudy.UI.Popups.Fail
 
         private void OnRestartClicked()
         {
-            Data.GameplaySceneController.RestartLevel();
+            AppManager.GetManager<GameplayManager>().RestartLevel();
         }
     }
 }

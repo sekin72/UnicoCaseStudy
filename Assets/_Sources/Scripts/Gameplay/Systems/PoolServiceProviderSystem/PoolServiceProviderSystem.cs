@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace UnicoCaseStudy.Gameplay.Systems.ViewSpawner
 {
-    [CreateAssetMenu(fileName = "ViewSpawnerSystem", menuName = "UnicoCaseStudy/Systems/ViewSpawnerSystem", order = 2)]
-    public sealed class ViewSpawnerSystem : GameSystem
+    [CreateAssetMenu(fileName = "PoolServiceProviderSystem", menuName = "UnicoCaseStudy/Systems/PoolServiceProviderSystem", order = 2)]
+    public sealed class PoolServiceProviderSystem : GameSystem
     {
         private PoolManager _poolManager;
 
@@ -31,7 +31,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.ViewSpawner
         {
         }
 
-        public T Spawn<T>(PoolKeys poolKey) where T : View
+        public T Get<T>(PoolKeys poolKey) where T : View
         {
             var view = _poolManager.GetGameObject(poolKey).GetComponent<T>();
 
@@ -42,7 +42,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.ViewSpawner
             return view;
         }
 
-        public void Despawn<T>(PoolKeys poolKey, T t) where T : View
+        public void Release<T>(PoolKeys poolKey, T t) where T : View
         {
             _poolManager.SafeReleaseObject(poolKey, t.gameObject);
         }

@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnicoCaseStudy.Managers.Gameplay;
 
 namespace UnicoCaseStudy.UI.Popups.Win
 {
@@ -23,7 +24,7 @@ namespace UnicoCaseStudy.UI.Popups.Win
 
         private void OnBackToMainClicked()
         {
-            Data.GameplaySceneController.ReturnToMainScene();
+            AppManager.GetManager<GameplayManager>().ReturnToMainScene();
         }
     }
 }

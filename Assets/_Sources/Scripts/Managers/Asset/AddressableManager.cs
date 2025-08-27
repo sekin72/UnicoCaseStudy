@@ -46,6 +46,12 @@ namespace UnicoCaseStudy.Managers.Asset
             cancellationToken.ThrowIfCancellationRequested();
         }
 
+        public async UniTask<T> GetScriptableAsset<T>(AssetReferenceT<T> assetReference, CancellationToken cancellationToken) where T : ScriptableObject
+        {
+            var asset = (T)(await LoadAssetAsync(assetReference, cancellationToken));
+            return asset;
+        }
+
         public async UniTask<T> LoadAssetAsync<T>(AssetReferenceT<T> assetReference, CancellationToken cancellationToken = default)
             where T : Object
         {

@@ -17,6 +17,36 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 598640079dd4047448f34cf4c2155b21
   m_SerializeEntries:
+  - m_GUID: 194f65d6959bc9f4e878df77b774b96f
+    m_Address: Assets/_Sources/ScriptableObjects/Configs/Systems/EnvironmentCreatorSystem.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c551ca240caccd498e4594031932c39
+    m_Address: Assets/_Sources/Prefabs/Systems/EnvironmentCreatorSystemView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d72a58bb06ff9644a8cc12f9fc4c495
+    m_Address: Assets/_Sources/Prefabs/Gameplay/Tiles/GroundTile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c0e170466c4cae4484999d6abe1cd4f
+    m_Address: Assets/_Sources/Prefabs/Gameplay/Tiles/PathTile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf6833c0b16476845bdb952b79dfc1b0
+    m_Address: Assets/_Sources/ScriptableObjects/Configs/EnvironmentData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd7742dc8dd3b2b4c85216b1c28d62a0
+    m_Address: Assets/_Sources/Prefabs/Gameplay/Tiles/Tile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d5e9efccc960a374ea6a7195c8bf221f
     m_Address: ExternalParticlesSystemView
     m_ReadOnly: 0

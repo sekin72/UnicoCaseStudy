@@ -6,10 +6,10 @@ using UnicoCaseStudy.Configs;
 using UnicoCaseStudy.Gameplay.Systems;
 using UnicoCaseStudy.Managers.Data;
 using UnicoCaseStudy.Managers.Data.Storages;
+using UnicoCaseStudy.Managers.Gameplay;
 using UnicoCaseStudy.Managers.Sound;
 using UnicoCaseStudy.Managers.UI;
 using UnicoCaseStudy.Managers.Vibration;
-using UnicoCaseStudy.SceneControllers;
 using UnicoCaseStudy.UI.Popups.Fail;
 using UnicoCaseStudy.UI.Popups.Win;
 using UnicoCaseStudy.Utilities;
@@ -26,6 +26,7 @@ namespace UnicoCaseStudy.Gameplay
         public CancellationTokenSource CancellationTokenSource { get; private set; }
         public LockBin InputDisabled { get; private set; }
 
+        private GameplayManager _gameplayManager;
         private DataManager _dataManager;
         private PopupManager _popupManager;
         private SoundManager _soundManager;
@@ -34,8 +35,6 @@ namespace UnicoCaseStudy.Gameplay
         private List<IGameSystem> _gameSystems;
         private Dictionary<Type, IGameSystem> _gameSystemsDictionary;
 
-        private GameplaySceneController _levelSceneController;
-
         [field: SerializeField] public GameSessionSaveStorage GameSessionSaveStorage { get; private set; }
         [field: SerializeField] public GameSettings GameSettings { get; private set; }
         [SerializeField] private SystemsCollection _systemsCollection;
@@ -43,8 +42,9 @@ namespace UnicoCaseStudy.Gameplay
         private bool _deactivated;
         private bool _disposed;
 
-        public async UniTask Initialize(GameplaySceneController levelSceneController, CancellationToken toBeLinkedToken)
+        public async UniTask Initialize(CancellationToken toBeLinkedToken)
         {
+            _gameplayManager = AppManager.GetManager<GameplayManager>();
             _dataManager = AppManager.GetManager<DataManager>();
             _popupManager = AppManager.GetManager<PopupManager>();
             _soundManager = AppManager.GetManager<SoundManager>();
@@ -52,8 +52,6 @@ namespace UnicoCaseStudy.Gameplay
 
             _disposed = false;
             _deactivated = false;
-
-            _levelSceneController = levelSceneController;
 
             Application.targetFrameRate = 60;
 
@@ -103,12 +101,12 @@ namespace UnicoCaseStudy.Gameplay
 
             if (_tickables.Count > 0)
             {
-                _levelSceneController.Tick -= Tick;
+                _gameplayManager.Tick -= Tick;
             }
 
             if (_lateTickables.Count > 0)
             {
-                _levelSceneController.LateTick -= LateTick;
+                _gameplayManager.LateTick -= LateTick;
             }
 
             ListPool<ITickable>.Release(_tickables);
@@ -175,8 +173,7 @@ namespace UnicoCaseStudy.Gameplay
             if (!success)
             {
                 _popupManager.Open<FailPopup, FailPopupData, FailPopupView>(
-                    new FailPopupData(
-                        _levelSceneController),
+                    new FailPopupData(),
                     CancellationTokenSource.Token).Forget();
                 return;
             }
@@ -184,8 +181,7 @@ namespace UnicoCaseStudy.Gameplay
             //_soundManager.PlayOneShot(SoundKeys.LevelCompleted);
             _vibrationManager.Vibrate(VibrationType.Success);
             _popupManager.Open<WinPopup, WinPopupData, WinPopupView>(
-                new WinPopupData(
-                    _levelSceneController),
+                new WinPopupData(),
                 CancellationTokenSource.Token).Forget();
         }
 
@@ -193,12 +189,12 @@ namespace UnicoCaseStudy.Gameplay
         {
             if (_tickables.Count > 0)
             {
-                _levelSceneController.Tick += Tick;
+                _gameplayManager.Tick += Tick;
             }
 
             if (_lateTickables.Count > 0)
             {
-                _levelSceneController.LateTick += LateTick;
+                _gameplayManager.LateTick += LateTick;
             }
         }
 
