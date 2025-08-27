@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 151c123e953dc0040afefefd73a3d640, type: 3}
   m_Name: Defender2
   m_EditorClassIdentifier: 
-  PoolKey: 0
+  PoolKey: 1001
   Sprite: {fileID: 21300000, guid: 970d574d72d68e744b59382781515142, type: 3}
   Damage: 0
   Range: 1

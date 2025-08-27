@@ -22,5 +22,13 @@
         Tile = 600,
         GroundTile = 601,
         GameplayTile = 602,
+
+        Defender1 = 1000,
+        Defender2 = 1001,
+        Defender3 = 1002,
+
+        Enemy1 = 2000,
+        Enemy2 = 2001,
+        Enemy3 = 2002,
     }
 }
