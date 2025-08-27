@@ -16,7 +16,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
         private GameObject _boardParent;
 
         private readonly List<GameObject> _groundTilesList = new();
-        private readonly List<GameObject> _gameplayTiles = new();
+        private readonly List<GameplayTile> _gameplayTiles = new();
 
         private PoolManager _poolManager;
 
@@ -119,10 +119,11 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     var tile = _groundTileArray[tilePosition.x, tilePosition.y];
                     _gameplayTileArray[i, j] = tile;
 
-                    var gameplayTile = _poolManager.GetGameObject(PoolKeys.PathTile);
+                    var gameplayTile = _poolManager.GetGameObject(PoolKeys.GameplayTile).GetComponent<GameplayTile>();
                     gameplayTile.transform.SetParent(tile.TileObject.transform);
                     gameplayTile.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
                     gameplayTile.transform.localScale = new Vector3(1, 1, 1);
+                    gameplayTile.Initialize(tile);
                     _gameplayTiles.Add(gameplayTile);
                 }
             }
@@ -145,7 +146,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
         {
             for (var i = 0; i < _gameplayTiles.Count; i++)
             {
-                _poolManager.SafeReleaseObject(PoolKeys.PathTile, _gameplayTiles[i]);
+                _poolManager.SafeReleaseObject(PoolKeys.GameplayTile, _gameplayTiles[i].gameObject);
             }
 
             _gameplayTiles.Clear();

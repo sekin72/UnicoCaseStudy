@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace GameClient.GameData
 {
-    [CreateAssetMenu(fileName = "EnvironmentData", menuName = "GameClient/EnvironmentData", order = 1)]
+    [CreateAssetMenu(fileName = "EnvironmentData", menuName = "UnicoCaseStudy/GameConfig/EnvironmentData", order = 2)]
     public class EnvironmentData : ScriptableObject
     {
         public int TileSize = 2;

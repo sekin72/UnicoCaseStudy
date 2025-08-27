@@ -21,6 +21,6 @@
 
         Tile = 600,
         GroundTile = 601,
-        PathTile = 602,
+        GameplayTile = 602,
     }
 }

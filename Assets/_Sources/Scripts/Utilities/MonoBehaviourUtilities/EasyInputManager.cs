@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace UnicoCaseStudy.Utilities.MonoBehaviourUtilities
 {
-    public class EasyInputManager : PlayerInputBase, IPointerEnterHandler, IPointerExitHandler
+    public class EasyInputManager : PlayerInputBase, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
     {
         public event Action<PointerEventData> Selected;
 
@@ -12,6 +12,8 @@ namespace UnicoCaseStudy.Utilities.MonoBehaviourUtilities
         public event Action<PointerEventData> Released;
 
         public event Action<PointerEventData> Entered;
+
+        public event Action<PointerEventData> Moved;
 
         public event Action<PointerEventData> Exited;
 
@@ -37,6 +39,11 @@ namespace UnicoCaseStudy.Utilities.MonoBehaviourUtilities
         protected override void OnObjectSelected(PointerEventData pointerEventData)
         {
             Selected?.Invoke(pointerEventData);
+        }
+
+        public void OnPointerMove(PointerEventData pointerEventData)
+        {
+            Moved?.Invoke(pointerEventData);
         }
 
         protected override void OnObjectReleased(PointerEventData pointerEventData)

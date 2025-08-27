@@ -23,5 +23,13 @@ namespace UnicoCaseStudy.UI.Components
                 textField.text = value;
             }
         }
+
+        public void SetColor(Color color)
+        {
+            foreach (var textField in TextFields)
+            {
+                textField.color = color;
+            }
+        }
     }
 }

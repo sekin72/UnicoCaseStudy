@@ -223,11 +223,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4904890080837095090, guid: d33748ef8e0d43546b789613a8ca2a05, type: 3}
       propertyPath: m_text
-      value: "Unico Case Study\nby \u015Eekip Kaan Ekin"
+      value: "Unico Case Study\n\n\n\n\u015Eekip Kaan Ekin"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4904890080837095090, guid: d33748ef8e0d43546b789613a8ca2a05, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7785172539735180146, guid: d33748ef8e0d43546b789613a8ca2a05, type: 3}
       propertyPath: m_text
-      value: "Unico Case Study\nby \u015Eekip Kaan Ekin"
+      value: "Unico Case Study\n\n\n\n\u015Eekip Kaan Ekin"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7785172539735180146, guid: d33748ef8e0d43546b789613a8ca2a05, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8115792504876029819, guid: d33748ef8e0d43546b789613a8ca2a05, type: 3}
       propertyPath: m_Pivot.x

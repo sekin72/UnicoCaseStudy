@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UnicoCaseStudy
 {
-    [CreateAssetMenu(fileName = "LevelConfig", menuName = "UnicoCaseStudy/LevelData/LevelConfig", order = 1)]
+    [CreateAssetMenu(fileName = "LevelConfig", menuName = "UnicoCaseStudy/GameConfig/LevelConfig", order = 1)]
     public class LevelConfig : ScriptableObject
     {
         public RawImage BGImage;

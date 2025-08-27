@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UnicoCaseStudy.Gameplay.Logic
 {
-    public class PassiveTile : MonoBehaviour
+    public class GameplayTile : MonoBehaviour
     {
         public Tile AttachedTile;
 
