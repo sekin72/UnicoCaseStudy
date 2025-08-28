@@ -29,6 +29,10 @@
         Defender2 = 1001,
         Defender3 = 1002,
 
+        IdleVFX1 = 1500,
+        IdleVFX2 = 1501,
+        IdleVFX3 = 1502,
+
         Enemy1 = 2000,
         Enemy2 = 2001,
         Enemy3 = 2002,

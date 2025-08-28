@@ -9,11 +9,14 @@ namespace UnicoCaseStudy.Gameplay.Logic
         [ReadOnly] public GameplayTile AttachedGameplayTile;
 
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private Transform _idleVFXParent;
+        public GameObject IdleVFX { get; private set; }
         private Sprite _sprite;
         private int _baseSortingOrder;
         private int _additionalSortingOrder;
 
-        public void Initialize(GameplayTile attachedGameplayTile, int baseSortingOrder, int additionalSortingOrder, Sprite overrideSprite)
+        public void Initialize(GameplayTile attachedGameplayTile, int baseSortingOrder, int additionalSortingOrder, Sprite overrideSprite,
+            GameObject idleVFX)
         {
             _sprite = _spriteRenderer.sprite;
 
@@ -23,6 +26,10 @@ namespace UnicoCaseStudy.Gameplay.Logic
 
             _sprite = overrideSprite;
             _spriteRenderer.sprite = _sprite;
+
+            IdleVFX = idleVFX;
+            IdleVFX.transform.SetParent(_idleVFXParent);
+            IdleVFX.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
 
             UpdateSortingOrder();
         }
@@ -34,9 +41,11 @@ namespace UnicoCaseStudy.Gameplay.Logic
 
         private void UpdateSortingOrder()
         {
-            if (_spriteRenderer != null)
+            _spriteRenderer.sortingOrder = _baseSortingOrder + _additionalSortingOrder;
+
+            foreach (var renderer in IdleVFX.GetComponentsInChildren<ParticleSystemRenderer>())
             {
-                _spriteRenderer.sortingOrder = _baseSortingOrder + _additionalSortingOrder;
+                renderer.sortingOrder = _spriteRenderer.sortingOrder - 1;
             }
         }
     }

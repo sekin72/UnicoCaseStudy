@@ -142,13 +142,15 @@ namespace UnicoCaseStudy.Gameplay.Systems
             _toBePlacedUI.OnDefenderPlaced();
 
             var defenderBoardItem = _poolManager.GetGameObject(PoolKeys.BoardItem).GetComponent<BoardItem>();
-
+            var idleVFX = _poolManager.GetGameObject(_placedDefender.IdleVFXPoolKey);
             defenderBoardItem.transform.SetParent(gameplayTile.transform);
             defenderBoardItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
             defenderBoardItem.transform.localScale = Vector3.one;
             defenderBoardItem.Initialize(gameplayTile,
                                         gameplayTile.BaseSortingOrder +
-                                        gameplayTile.AdditionalSortingOrder + 10, 0, _placedDefender.Sprite);
+                                        gameplayTile.AdditionalSortingOrder + 10, 0, 
+                                        _placedDefender.Sprite,
+                                        idleVFX);
 
             _placedDefenders.Add(defenderBoardItem);
         }

@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 598640079dd4047448f34cf4c2155b21
   m_SerializeEntries:
+  - m_GUID: 12366c3f588598845863f5ec197cdcf3
+    m_Address: Assets/_Sources/Prefabs/Gameplay/VFX/IdleVFXs/IdleVFX3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 194f65d6959bc9f4e878df77b774b96f
     m_Address: EnvironmentCreatorSystem
     m_ReadOnly: 0
@@ -52,6 +57,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71274c7783e9a4f44bdba8420acdced2
+    m_Address: Assets/_Sources/Prefabs/Gameplay/VFX/IdleVFXs/IdleVFX1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c0e170466c4cae4484999d6abe1cd4f
     m_Address: PathTile
     m_ReadOnly: 0
@@ -59,6 +69,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9336581c2541c874aad61b23b32349cf
     m_Address: Defender3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a806e8aee25a47e44b014444d6c29f6e
+    m_Address: Assets/_Sources/Prefabs/Gameplay/VFX/IdleVFXs/IdleVFX2.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

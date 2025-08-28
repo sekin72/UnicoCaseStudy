@@ -7,6 +7,7 @@ namespace GameClient.GameData
     public class DefenderConfig : ScriptableObject
     {
         public PoolKeys PoolKey;
+        public PoolKeys IdleVFXPoolKey;
         public Sprite Sprite;
 
         public int Damage;
