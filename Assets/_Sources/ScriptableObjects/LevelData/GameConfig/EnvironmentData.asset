@@ -12,15 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52fc687cd4525a24baf2410599570755, type: 3}
   m_Name: EnvironmentData
   m_EditorClassIdentifier: 
-  TileKey: 
-  GroundTileKey: 
-  PlayerUnitTileKey: 
-  PathTileKey: 
-  EnemySpawnGateKey: 
-  MainTowerKey: 
-  TileSize: 5
-  StartingPosition: {x: 0, y: 0}
-  TotalWidth: 20
-  TotalHeight: 60
-  PlayableWidth: 10
-  PlayableHeight: 10
+  PixelSize: 0.64
+  TileSize: 1
+  TotalWidth: 10
+  TotalHeight: 20
+  GameplayWidth: 4
+  GameplayHeight: 8

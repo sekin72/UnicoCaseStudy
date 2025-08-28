@@ -86,7 +86,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
 
             if (HitGameplayTile(eventData, out var hit) && hit.HasValue)
             {
-                var tile = hit.Value.collider.GetComponent<GameplayTile>();
+                var tile = hit.Value.collider.GetComponentInParent<GameplayTile>();
                 _toBePlacedUI.OnDefenderPlaced();
             }
 
@@ -94,7 +94,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
             _placedDefender = null;
         }
 
-        private bool HitGameplayTile(PointerEventData eventData, out RaycastHit? hit)
+        private bool HitGameplayTile(PointerEventData eventData, out RaycastHit2D? hit)
         {
             hit = null;
 
@@ -104,7 +104,9 @@ namespace UnicoCaseStudy.Gameplay.Systems
             }
 
             Ray ray = _camera.ScreenPointToRay(eventData.position);
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, _gameplayTileLayerMask, QueryTriggerInteraction.Ignore))
+            RaycastHit2D hitInfo = Physics2D.GetRayIntersection(ray, 1000f, _gameplayTileLayerMask);
+
+            if (hitInfo.collider != null)
             {
                 hit = hitInfo;
                 return true;

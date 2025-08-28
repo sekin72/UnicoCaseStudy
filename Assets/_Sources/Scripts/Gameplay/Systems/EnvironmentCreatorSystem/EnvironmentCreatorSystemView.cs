@@ -23,7 +23,6 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
         private EnvironmentData _environmentData;
 
         private PoolKeys _tileKey;
-        private int _tileSize;
 
         private int _totalWidth;
         private int _totalHeight;
@@ -45,7 +44,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     {
                         TileObject = _poolManager.GetGameObject(_tileKey),
                         Index = new Vector2Int(i, j),
-                        Position = new Vector3(i * _tileSize, 0, j * _tileSize),
+                        Position = new Vector3(i, j, 0),
                         TileID = 0
                     };
 
@@ -62,10 +61,9 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             _camera = AppManager.GetManager<GameplayManager>().GameplaySceneController.SceneCamera;
 
             _boardParent = new GameObject("Board");
-            _boardParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.up * 180));
+            _boardParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
 
             _tileKey = PoolKeys.Tile;
-            _tileSize = _environmentData.TileSize;
             _totalWidth = _environmentData.TotalWidth;
             _totalHeight = _environmentData.TotalHeight;
             _gameplayWidth = _environmentData.GameplayWidth;
@@ -100,7 +98,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     var groundTile = _poolManager.GetGameObject(poolKey);
                     groundTile.transform.SetParent(tile.TileObject.transform);
                     groundTile.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
-                    groundTile.transform.localScale = new Vector3(1, 1, 1);
+                    groundTile.transform.localScale = Vector3.one;
                     _groundTilesList.Add(groundTile);
                 }
             }
@@ -122,7 +120,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     var gameplayTile = _poolManager.GetGameObject(PoolKeys.GameplayTile).GetComponent<GameplayTile>();
                     gameplayTile.transform.SetParent(tile.TileObject.transform);
                     gameplayTile.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
-                    gameplayTile.transform.localScale = new Vector3(1, 1, 1);
+                    gameplayTile.transform.localScale = Vector3.one;
                     gameplayTile.Initialize(tile);
                     _gameplayTiles.Add(gameplayTile);
                 }
@@ -158,14 +156,14 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             Vector3 camPos = _camera.transform.position;
             Vector3 camDir = _camera.transform.forward;
 
-            float t = -camPos.y / camDir.y;
-            Vector3 groundPoint = camPos + (camDir * t);
+            float t = -camPos.z / camDir.z;
+            Vector3 screenPlanePoint = camPos + (camDir * t); // hit XY plane (z = 0)
 
-            float boardWorldWidth = (_totalWidth - 1) * _tileSize;
-            float boardWorldHeight = (_totalHeight - 1) * _tileSize;
-            Vector3 boardCenter = new(boardWorldWidth * 0.5f, 0f, boardWorldHeight * 0.5f);
+            float boardWorldWidth = (_totalWidth - 1);
+            float boardWorldHeight = (_totalHeight - 1);
+            Vector3 boardCenter = new(boardWorldWidth * 0.5f, boardWorldHeight * 0.5f, 0f);
 
-            _boardParent.transform.position = groundPoint - boardCenter;
+            _boardParent.transform.position = screenPlanePoint - boardCenter;
 
             float step = 1f;
             int maxSteps = 100;
