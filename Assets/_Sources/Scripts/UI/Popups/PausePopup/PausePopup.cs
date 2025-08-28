@@ -36,12 +36,6 @@ namespace UnicoCaseStudy.Gameplay.UI.Popups.Pause
 
         public override void Dispose()
         {
-            if (Data.IsDisposed)
-            {
-                Debug.LogWarning($"Trying to dispose {View.name}, but it's already disposed");
-                return;
-            }
-
             View.SoundToggled -= OnSoundToggled;
             View.SoundVolumeChanged -= OnSoundVolumeChanged;
             View.VibrationToggled -= OnVibrationToggled;

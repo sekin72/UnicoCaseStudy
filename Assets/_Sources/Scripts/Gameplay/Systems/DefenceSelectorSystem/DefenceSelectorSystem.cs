@@ -6,6 +6,7 @@ using GameClient.GameData;
 using UnicoCaseStudy.Gameplay.Logic;
 using UnicoCaseStudy.Gameplay.Signal;
 using UnicoCaseStudy.Managers.Gameplay;
+using UnicoCaseStudy.Managers.Pool;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,18 +20,22 @@ namespace UnicoCaseStudy.Gameplay.Systems
 
         private DefenceSelectorMover _defenceSelectorMover;
 
-        private const string _gameplayTileLayerName = "GameplayTile";
-        private static int _gameplayTileLayerMask;
+        [SerializeField] private LayerMask _gameplayTileLayerMask;
 
         private Camera _camera;
 
         private DefenceSelectorUI _toBePlacedUI;
         private DefenderConfig _placedDefender;
 
+        private PoolManager _poolManager;
+
+        private List<BoardItem> _placedDefenders;
+
         public override UniTask Activate(CancellationToken cancellationToken)
         {
-            _gameplayTileLayerMask = 1 << LayerMask.NameToLayer(_gameplayTileLayerName);
+            _poolManager = AppManager.GetManager<PoolManager>();
 
+            _placedDefenders = new();
             var gameplaySceneController = AppManager.GetManager<GameplayManager>().GameplaySceneController;
             _defenceSelectorMover = gameplaySceneController.DefenceSelectorMover;
             _camera = gameplaySceneController.SceneCamera;
@@ -53,6 +58,12 @@ namespace UnicoCaseStudy.Gameplay.Systems
             foreach (var selector in _defenceItemSelectors)
             {
                 selector.Dispose();
+            }
+
+            foreach (var defender in _placedDefenders)
+            {
+                defender.Dispose();
+                _poolManager.SafeReleaseObject(PoolKeys.BoardItem, defender.gameObject);
             }
         }
 
@@ -86,8 +97,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
 
             if (HitGameplayTile(eventData, out var hit) && hit.HasValue)
             {
-                var tile = hit.Value.collider.GetComponentInParent<GameplayTile>();
-                _toBePlacedUI.OnDefenderPlaced();
+                TryPlaceDefender(hit.Value);
             }
 
             _defenceSelectorMover.Deactivate();
@@ -103,8 +113,10 @@ namespace UnicoCaseStudy.Gameplay.Systems
                 return false;
             }
 
-            Ray ray = _camera.ScreenPointToRay(eventData.position);
-            RaycastHit2D hitInfo = Physics2D.GetRayIntersection(ray, 1000f, _gameplayTileLayerMask);
+            Vector2 screenPoint = eventData.position;
+            Vector2 worldPoint = _camera.ScreenToWorldPoint(screenPoint);
+
+            RaycastHit2D hitInfo = Physics2D.Raycast(worldPoint, Vector2.zero, 0f, _gameplayTileLayerMask);
 
             if (hitInfo.collider != null)
             {
@@ -113,6 +125,32 @@ namespace UnicoCaseStudy.Gameplay.Systems
             }
 
             return false;
+        }
+
+        private void TryPlaceDefender(RaycastHit2D hit)
+        {
+            if (!hit.collider.transform.parent.TryGetComponent<GameplayTile>(out var gameplayTile))
+            {
+                return;
+            }
+
+            if (gameplayTile.GameplayIndex.y >= Session.GameSettings.DefencePlaceHeight)
+            {
+                return;
+            }
+
+            _toBePlacedUI.OnDefenderPlaced();
+
+            var defenderBoardItem = _poolManager.GetGameObject(PoolKeys.BoardItem).GetComponent<BoardItem>();
+
+            defenderBoardItem.transform.SetParent(gameplayTile.transform);
+            defenderBoardItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
+            defenderBoardItem.transform.localScale = Vector3.one;
+            defenderBoardItem.Initialize(gameplayTile,
+                                        gameplayTile.BaseSortingOrder +
+                                        gameplayTile.AdditionalSortingOrder + 10, 0, _placedDefender.Sprite);
+
+            _placedDefenders.Add(defenderBoardItem);
         }
     }
 }

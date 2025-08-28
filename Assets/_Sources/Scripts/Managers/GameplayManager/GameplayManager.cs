@@ -52,8 +52,12 @@ namespace UnicoCaseStudy.Managers.Gameplay
         {
             _levelActivated = false;
 
-            GameSession?.Dispose();
-            GameSession = null;
+            if (GameSession != null)
+            {
+                GameSession.Dispose();
+                _poolManager.SafeReleaseObject(PoolKeys.GameSession, GameSession.gameObject);
+                GameSession = null;
+            }
 
             _popupManager.Close();
         }
@@ -64,10 +68,15 @@ namespace UnicoCaseStudy.Managers.Gameplay
             {
                 _currentCancellationTokenSource.Cancel();
                 _currentCancellationTokenSource.Dispose();
+                _currentCancellationTokenSource = null;
             }
 
-            GameSession?.Dispose();
-            GameSession = null;
+            if (GameSession != null)
+            {
+                GameSession.Dispose();
+                _poolManager.SafeReleaseObject(PoolKeys.GameSession, GameSession.gameObject);
+                GameSession = null;
+            }
 
             await LoadLevelInternal();
         }
@@ -98,8 +107,12 @@ namespace UnicoCaseStudy.Managers.Gameplay
 
         public void ReturnToMainScene()
         {
-            GameSession.Dispose();
-            GameSession = null;
+            if (GameSession != null)
+            {
+                GameSession.Dispose();
+                _poolManager.SafeReleaseObject(PoolKeys.GameSession, GameSession.gameObject);
+                GameSession = null;
+            }
 
             _loadingManager.LoadMainScene().Forget();
         }

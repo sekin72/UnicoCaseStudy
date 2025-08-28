@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Defender3
   m_EditorClassIdentifier: 
   PoolKey: 1002
-  Sprite: {fileID: 21300000, guid: ed169c7ef182f0e44a5d758e6a61410d, type: 3}
+  Sprite: {fileID: 21300000, guid: 5671534378da9b8488fce65d1815c388, type: 3}
   Damage: 0
   Range: 1
   Cooldown: 0

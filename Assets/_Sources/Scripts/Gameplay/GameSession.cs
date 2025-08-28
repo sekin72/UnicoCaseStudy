@@ -37,6 +37,7 @@ namespace UnicoCaseStudy.Gameplay
 
         [field: SerializeField] public GameSessionSaveStorage GameSessionSaveStorage { get; private set; }
         [field: SerializeField] public GameSettings GameSettings { get; private set; }
+        [field: SerializeField] public LevelConfig LevelConfig { get; private set; }
         [SerializeField] private SystemsCollection _systemsCollection;
 
         private bool _deactivated;

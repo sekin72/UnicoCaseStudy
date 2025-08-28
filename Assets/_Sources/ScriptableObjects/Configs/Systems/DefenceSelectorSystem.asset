@@ -16,3 +16,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 45553ffbb87fb514e9ee2d72c5e2f26c, type: 2}
   - {fileID: 11400000, guid: 205340175e5e1154f8e068baa824f9bc, type: 2}
   - {fileID: 11400000, guid: bbe6ad3cc7446b84db6e1825d4330ec4, type: 2}
+  _gameplayTileLayerMask:
+    serializedVersion: 2
+    m_Bits: 64

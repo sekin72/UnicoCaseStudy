@@ -23,6 +23,8 @@
         GroundTile = 601,
         GameplayTile = 602,
 
+        BoardItem = 650,
+
         Defender1 = 1000,
         Defender2 = 1001,
         Defender3 = 1002,

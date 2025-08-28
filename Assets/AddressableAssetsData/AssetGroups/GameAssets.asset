@@ -37,6 +37,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c8a5039689378348badca2c217b2f69
+    m_Address: Assets/_Sources/Prefabs/Gameplay/Tiles/BoardItem.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6c551ca240caccd498e4594031932c39
     m_Address: EnvironmentCreatorSystemView
     m_ReadOnly: 0

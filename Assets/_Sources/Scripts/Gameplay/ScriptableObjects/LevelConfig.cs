@@ -8,8 +8,5 @@ namespace UnicoCaseStudy
     [CreateAssetMenu(fileName = "LevelConfig", menuName = "UnicoCaseStudy/GameConfig/LevelConfig", order = 1)]
     public class LevelConfig : ScriptableObject
     {
-        public RawImage BGImage;
-        public RawImage FGImage;
-
     }
 }

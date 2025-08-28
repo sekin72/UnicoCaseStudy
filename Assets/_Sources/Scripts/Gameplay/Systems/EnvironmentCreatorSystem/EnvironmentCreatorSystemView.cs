@@ -10,6 +10,9 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
 {
     public class EnvironmentCreatorSystemView : MonoBehaviour, IDisposable
     {
+        [SerializeField] private Sprite _roadBottomSprite;
+        [SerializeField] private Sprite _roadTopSprite;
+
         private Tile[,] _groundTileArray;
         private Tile[,] _gameplayTileArray;
 
@@ -43,7 +46,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     _groundTileArray[i, j] = new Tile
                     {
                         TileObject = _poolManager.GetGameObject(_tileKey),
-                        Index = new Vector2Int(i, j),
+                        BoardIndex = new Vector2Int(i, j),
                         Position = new Vector3(i, j, 0),
                         TileID = 0
                     };
@@ -117,16 +120,21 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     var tile = _groundTileArray[tilePosition.x, tilePosition.y];
                     _gameplayTileArray[i, j] = tile;
 
+                    var overrideSprite = (j == 0) ? _roadBottomSprite : (j == _gameplayHeight - 1) ? _roadTopSprite : null;
+
                     var gameplayTile = _poolManager.GetGameObject(PoolKeys.GameplayTile).GetComponent<GameplayTile>();
                     gameplayTile.transform.SetParent(tile.TileObject.transform);
                     gameplayTile.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
                     gameplayTile.transform.localScale = Vector3.one;
-                    gameplayTile.Initialize(tile);
+                    gameplayTile.Initialize(tile, new Vector2Int(i, j), (_gameplayHeight - j) * 100, overrideSprite: overrideSprite);
                     _gameplayTiles.Add(gameplayTile);
                 }
             }
 
             CenterBoardToShowPathTiles();
+
+            _boardParent.gameObject.SetActive(false);
+            _boardParent.gameObject.SetActive(true);
         }
 
         private void DisposeGroundTiles()
@@ -144,6 +152,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
         {
             for (var i = 0; i < _gameplayTiles.Count; i++)
             {
+                _gameplayTiles[i].Dispose();
                 _poolManager.SafeReleaseObject(PoolKeys.GameplayTile, _gameplayTiles[i].gameObject);
             }
 
