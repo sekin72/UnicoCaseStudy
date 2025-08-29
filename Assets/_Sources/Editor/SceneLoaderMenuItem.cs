@@ -7,12 +7,12 @@ namespace KaanUtilities.Editor
     public class SceneLoaderMenuItem
     {
 
-        [MenuItem("UnicoCaseStudy/Scenes/LoadingScene", false, 50)]
+        [MenuItem("UnicoCaseStudy/Scenes/PreloaderScene", false, 50)]
         public static void LoadLoadingScene()
         {
             if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
-                EditorSceneManager.OpenScene("Assets/_Sources/Scenes/LoadingScene.unity", OpenSceneMode.Single);
+                EditorSceneManager.OpenScene("Assets/_Sources/Scenes/PreloaderScene.unity", OpenSceneMode.Single);
             }
         }
 

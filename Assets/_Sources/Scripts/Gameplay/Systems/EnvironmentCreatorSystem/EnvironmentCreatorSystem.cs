@@ -13,11 +13,9 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
     [CreateAssetMenu(fileName = "EnvironmentCreatorSystem", menuName = "UnicoCaseStudy/Systems/EnvironmentCreatorSystem", order = 1)]
     public sealed class EnvironmentCreatorSystem : GameSystem
     {
-        [SerializeField] private AssetReferenceT<EnvironmentData> _environementDataReference;
         private EnvironmentCreatorSystemView _view;
 
         private PoolManager _poolManager;
-        private AddressableManager _addressableManager;
 
         public List<Tile> Path { get; private set; }
 
@@ -26,16 +24,14 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             await base.Initialize(gameSession, cancellationToken);
 
             _poolManager = AppManager.GetManager<PoolManager>();
-            _addressableManager = AppManager.GetManager<AddressableManager>();
-
-            var environmentData = await _addressableManager.GetScriptableAsset(_environementDataReference, cancellationToken);
 
             _view = _poolManager.GetGameObject(PoolKeys.EnvironmentCreatorSystemView).GetComponent<EnvironmentCreatorSystemView>();
-            _view.Initialize(environmentData);
+            _view.Initialize(Session.GameSettings);
 
             UnityEngine.Random.InitState(Session.GameSessionSaveStorage.LevelRandomSeed);
-            _view.CreateGroundTiles();
+            await _view.CreateGroundTiles(cancellationToken);
             _view.CreateGameplayTiles();
+            _view.FinalBoardAdjustments();
         }
 
         public override UniTask Activate(CancellationToken cancellationToken)

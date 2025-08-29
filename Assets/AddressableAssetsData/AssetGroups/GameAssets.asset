@@ -47,6 +47,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60e48ebeb5fca064d8d44729317ccd33
+    m_Address: Assets/_Sources/Prefabs/Gameplay/Tiles/VillagePrefab.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6c551ca240caccd498e4594031932c39
     m_Address: EnvironmentCreatorSystemView
     m_ReadOnly: 0
@@ -87,8 +92,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bf6833c0b16476845bdb952b79dfc1b0
-    m_Address: EnvironmentData
+  - m_GUID: bc70986bae1e9604cacbe899213daf0b
+    m_Address: Assets/_Sources/Prefabs/Gameplay/Tiles/EnvironmentItem.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

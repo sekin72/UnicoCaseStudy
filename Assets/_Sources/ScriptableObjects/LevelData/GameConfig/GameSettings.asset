@@ -12,3 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27311ebcf82e8584ab1c93d47b9f6b0d, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
+  TotalWidth: 20
+  TotalHeight: 20
+  GameplayWidth: 4
+  GameplayHeight: 8
+  BoardYOffset: 0.5
+  DefencePlaceHeight: 4
+  LightGreenSpriteWrapper:
+    Top: {fileID: 778985077, guid: 4c3ce562d36120943b8023bd527c82e9, type: 3}
+    Middle: {fileID: -1572822818, guid: 4c3ce562d36120943b8023bd527c82e9, type: 3}
+    Bottom: {fileID: -196973331, guid: 4c3ce562d36120943b8023bd527c82e9, type: 3}
+    BG: {fileID: 624314495, guid: 4c3ce562d36120943b8023bd527c82e9, type: 3}
+  DarkGreenSpriteWrapper:
+    Top: {fileID: -152106856, guid: 3df8b6677ef974c42885379541272075, type: 3}
+    Middle: {fileID: 992326908, guid: 3df8b6677ef974c42885379541272075, type: 3}
+    Bottom: {fileID: -276705194, guid: 3df8b6677ef974c42885379541272075, type: 3}
+    BG: {fileID: 915804713, guid: 3df8b6677ef974c42885379541272075, type: 3}
+  GreySpriteWrapper:
+    Top: {fileID: -152423499, guid: 3df8b6677ef974c42885379541272075, type: 3}
+    Middle: {fileID: 161678951, guid: 3df8b6677ef974c42885379541272075, type: 3}
+    Bottom: {fileID: 0}
+    BG: {fileID: 1005506691, guid: 3df8b6677ef974c42885379541272075, type: 3}

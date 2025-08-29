@@ -44,5 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f8411f8c1520e44aa56db52494301f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _roadBottomSprite: {fileID: 9524324, guid: 4c3ce562d36120943b8023bd527c82e9, type: 3}
-  _roadTopSprite: {fileID: 2108311557, guid: 4c3ce562d36120943b8023bd527c82e9, type: 3}
+  _forestGOReference:
+    m_AssetGUID: bc70986bae1e9604cacbe899213daf0b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
+  _villageGOReference:
+    m_AssetGUID: 60e48ebeb5fca064d8d44729317ccd33
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1

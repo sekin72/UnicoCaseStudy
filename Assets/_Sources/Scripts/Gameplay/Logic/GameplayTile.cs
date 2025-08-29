@@ -16,7 +16,13 @@ namespace UnicoCaseStudy.Gameplay.Logic
         public int BaseSortingOrder { get; private set; }
         public int AdditionalSortingOrder { get; private set; }
 
-        public void Initialize(Tile tile, Vector2Int gameplayIndex, int baseSortingOrder, int additionalSortingOrder = 0, Sprite overrideSprite = null)
+        public void Initialize(
+            Tile tile,
+            Vector2Int gameplayIndex,
+            int baseSortingOrder,
+            bool checkerTile,
+            int additionalSortingOrder = 0,
+            Sprite overrideSprite = null)
         {
             AttachedTile = tile;
             GameplayIndex = gameplayIndex;
@@ -28,6 +34,13 @@ namespace UnicoCaseStudy.Gameplay.Logic
             {
                 _sprite = overrideSprite;
                 _spriteRenderer.sprite = _sprite;
+            }
+
+            if (checkerTile)
+            {
+                Color.RGBToHSV(_spriteRenderer.color, out float h, out float s, out float v);
+                v = 0.9f;
+                _spriteRenderer.color = Color.HSVToRGB(h, s, v);
             }
 
             UpdateSortingOrder();

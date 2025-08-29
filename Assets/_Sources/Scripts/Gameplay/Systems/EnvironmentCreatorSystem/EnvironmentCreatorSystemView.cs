@@ -1,17 +1,23 @@
 using System;
 using System.Collections.Generic;
-using GameClient.GameData;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using UnicoCaseStudy.Configs;
 using UnicoCaseStudy.Gameplay.Logic;
+using UnicoCaseStudy.Managers.Asset;
 using UnicoCaseStudy.Managers.Gameplay;
 using UnicoCaseStudy.Managers.Pool;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
 {
     public class EnvironmentCreatorSystemView : MonoBehaviour, IDisposable
     {
-        [SerializeField] private Sprite _roadBottomSprite;
-        [SerializeField] private Sprite _roadTopSprite;
+        [SerializeField] private AssetReferenceT<GameObject> _forestGOReference;
+        [SerializeField] private AssetReferenceT<GameObject> _villageGOReference;
+        private GameObject _forestGO;
+        private GameObject _villageGO;
 
         private Tile[,] _groundTileArray;
         private Tile[,] _gameplayTileArray;
@@ -21,9 +27,10 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
         private readonly List<GameObject> _groundTilesList = new();
         private readonly List<GameplayTile> _gameplayTiles = new();
 
+        private AddressableManager _addressableManager;
         private PoolManager _poolManager;
 
-        private EnvironmentData _environmentData;
+        private GameSettings _gameSettings;
 
         private PoolKeys _tileKey;
 
@@ -34,9 +41,9 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
 
         private Camera _camera;
 
-        public void Initialize(EnvironmentData environmentData)
+        public void Initialize(GameSettings gameSettings)
         {
-            _environmentData = environmentData;
+            _gameSettings = gameSettings;
             SetParameters();
 
             for (var i = 0; i < _totalWidth; i++)
@@ -60,6 +67,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
 
         private void SetParameters()
         {
+            _addressableManager = AppManager.GetManager<AddressableManager>();
             _poolManager = AppManager.GetManager<PoolManager>();
             _camera = AppManager.GetManager<GameplayManager>().GameplaySceneController.SceneCamera;
 
@@ -67,10 +75,10 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             _boardParent.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
 
             _tileKey = PoolKeys.Tile;
-            _totalWidth = _environmentData.TotalWidth;
-            _totalHeight = _environmentData.TotalHeight;
-            _gameplayWidth = _environmentData.GameplayWidth;
-            _gameplayHeight = _environmentData.GameplayHeight;
+            _totalWidth = _gameSettings.TotalWidth;
+            _totalHeight = _gameSettings.TotalHeight;
+            _gameplayWidth = _gameSettings.GameplayWidth;
+            _gameplayHeight = _gameSettings.GameplayHeight;
 
             _groundTileArray = new Tile[_totalWidth, _totalHeight];
             _gameplayTileArray = new Tile[_gameplayWidth, _gameplayHeight];
@@ -78,6 +86,8 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
 
         public void Dispose()
         {
+            _addressableManager.ReleaseInstance(_forestGO);
+
             DisposeGroundTiles();
             DisposeGameplayTiles();
 
@@ -89,9 +99,17 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             return _groundTileArray[index.x, index.y];
         }
 
-        public void CreateGroundTiles()
+        public async UniTask CreateGroundTiles(CancellationToken cancellationToken)
         {
             var poolKey = PoolKeys.GroundTile;
+
+            _forestGO = await _addressableManager.InstantiateAssetAsync(_forestGOReference, cancellationToken);
+            int forestX = ((_totalWidth - _gameplayWidth) / 2) - 2;
+            int forestY = ((_totalHeight - _gameplayHeight) / 2) + _gameplayHeight;
+
+            _villageGO = await _addressableManager.InstantiateAssetAsync(_villageGOReference, cancellationToken);
+            int villageX = ((_totalWidth - _gameplayWidth) / 2) - 2;
+            int villageY = ((_totalHeight - _gameplayHeight) / 2) - 1;
 
             for (var i = 0; i < _totalWidth; i++)
             {
@@ -103,6 +121,25 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     groundTile.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
                     groundTile.transform.localScale = Vector3.one;
                     _groundTilesList.Add(groundTile);
+
+                    var groundTileComponent = groundTile.GetComponent<GroundTile>();
+                    groundTileComponent.SpriteRenderer.sprite = j >= _totalHeight / 2 ?
+                        _gameSettings.GreySpriteWrapper.BG :
+                        _gameSettings.DarkGreenSpriteWrapper.BG;
+
+                    if (i == forestX && j == forestY)
+                    {
+                        _forestGO.transform.SetParent(tile.TileObject.transform);
+                        _forestGO.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
+                        _forestGO.transform.localScale = Vector3.one;
+                    }
+
+                    if (i == villageX && j == villageY)
+                    {
+                        _villageGO.transform.SetParent(tile.TileObject.transform);
+                        _villageGO.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
+                        _villageGO.transform.localScale = Vector3.one;
+                    }
                 }
             }
         }
@@ -120,18 +157,23 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     var tile = _groundTileArray[tilePosition.x, tilePosition.y];
                     _gameplayTileArray[i, j] = tile;
 
-                    var overrideSprite = (j == 0) ? _roadBottomSprite : (j == _gameplayHeight - 1) ? _roadTopSprite : null;
+                    var (isChecker, overrideSprite) = DecideBackgroundSprite(i, j);
 
                     var gameplayTile = _poolManager.GetGameObject(PoolKeys.GameplayTile).GetComponent<GameplayTile>();
                     gameplayTile.transform.SetParent(tile.TileObject.transform);
                     gameplayTile.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
                     gameplayTile.transform.localScale = Vector3.one;
-                    gameplayTile.Initialize(tile, new Vector2Int(i, j), (_gameplayHeight - j) * 100, overrideSprite: overrideSprite);
+                    gameplayTile.Initialize(tile, new Vector2Int(i, j), (_gameplayHeight - j) * 100, isChecker, overrideSprite: overrideSprite);
                     _gameplayTiles.Add(gameplayTile);
                 }
             }
+        }
 
+        public void FinalBoardAdjustments()
+        {
             CenterBoardToShowPathTiles();
+
+            _boardParent.transform.position += Vector3.up * _gameSettings.BoardYOffset;
 
             _boardParent.gameObject.SetActive(false);
             _boardParent.gameObject.SetActive(true);
@@ -204,6 +246,32 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             }
 
             return true;
+        }
+
+        private (bool, Sprite) DecideBackgroundSprite(int i, int j)
+        {
+            bool isBottom = j == 0;
+            bool isTop = j == _gameplayHeight - 1;
+            bool isChecker = false;
+
+            BackgroundSpriteWrapper wrapper;
+
+            if (j < _gameSettings.DefencePlaceHeight)
+            {
+                isChecker = (i + j) % 2 == 0;
+                wrapper = _gameSettings.DarkGreenSpriteWrapper;
+            }
+            else
+            {
+                wrapper = _gameSettings.GreySpriteWrapper;
+            }
+
+            return (isTop, isBottom) switch
+            {
+                (true, _) => (isChecker, wrapper.Top),
+                (_, true) => (isChecker, wrapper.Bottom),
+                _ => (isChecker, wrapper.Middle)
+            };
         }
     }
 }
