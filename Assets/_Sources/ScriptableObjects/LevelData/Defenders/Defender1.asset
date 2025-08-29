@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 151c123e953dc0040afefefd73a3d640, type: 3}
   m_Name: Defender1
   m_EditorClassIdentifier: 
-  PoolKey: 1000
-  IdleVFXPoolKey: 1500
   Sprite: {fileID: 21300000, guid: c93b03c6bd9d6c840b5bec1641fd0574, type: 3}
+  IdleVFXPoolKey: 1500
   PlacementCooldown: 5
   Damage: 0
   Range: 1

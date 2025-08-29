@@ -25,7 +25,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
 
         private PoolManager _poolManager;
 
-        private List<BoardItem> _placedDefenders;
+        private List<Defender> _placedDefenders;
 
         private PlacementInputTypes _placementInputType;
         private NewPlacementInput _newPlacementInput;
@@ -69,7 +69,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
             foreach (var defender in _placedDefenders)
             {
                 defender.Dispose();
-                _poolManager.SafeReleaseObject(PoolKeys.BoardItem, defender.gameObject);
+                _poolManager.SafeReleaseObject(PoolKeys.Defender, defender.gameObject);
             }
         }
 
@@ -173,7 +173,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
                 return false;
             }
 
-            if (!canPlaceOnAnother && gameplayTile.OccupyingBoardItem != null)
+            if (!canPlaceOnAnother && gameplayTile.OccupyingDefender != null)
             {
                 return false;
             }
@@ -183,16 +183,14 @@ namespace UnicoCaseStudy.Gameplay.Systems
 
         public void PlaceDefender(GameplayTile gameplayTile, DefenderConfig defenderConfig)
         {
-            var defenderBoardItem = _poolManager.GetGameObject(PoolKeys.BoardItem).GetComponent<BoardItem>();
+            var defenderBoardItem = _poolManager.GetGameObject(PoolKeys.Defender).GetComponent<Defender>();
             var idleVFX = _poolManager.GetGameObject(defenderConfig.IdleVFXPoolKey);
             defenderBoardItem.transform.SetParent(gameplayTile.transform);
             defenderBoardItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
             defenderBoardItem.transform.localScale = Vector3.one;
-            defenderBoardItem.Initialize(gameplayTile,
-                                        defenderConfig.Sprite,
-                                        idleVFX);
+            defenderBoardItem.Initialize(defenderConfig, gameplayTile, idleVFX);
 
-            gameplayTile.SetOccupyingBoardItem(defenderBoardItem);
+            gameplayTile.SetOccupyingDefender(defenderBoardItem);
             _placedDefenders.Add(defenderBoardItem);
         }
 

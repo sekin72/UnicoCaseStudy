@@ -8,7 +8,7 @@ namespace UnicoCaseStudy.Gameplay.Logic
     public class GameplayTile : MonoBehaviour, IDisposable
     {
         public Tile AttachedTile;
-        public BoardItem OccupyingBoardItem { get; private set; }
+        public Defender OccupyingDefender { get; private set; }
         [ReadOnly] public Vector2Int GameplayIndex;
 
         [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -16,25 +16,18 @@ namespace UnicoCaseStudy.Gameplay.Logic
         [SerializeField] private BoxCollider2D _boxCollider;
         private Sprite _sprite;
 
-        public int BaseSortingOrder { get; private set; }
-        public int AdditionalSortingOrder { get; private set; }
-
         private Color _positiveColor;
         private Color _negativeColor;
 
         public void Initialize(
             Tile tile,
             Vector2Int gameplayIndex,
-            int baseSortingOrder,
             bool checkerTile,
             GameSettings gameSettings,
-            int additionalSortingOrder = 0,
             Sprite overrideSprite = null)
         {
             AttachedTile = tile;
             GameplayIndex = gameplayIndex;
-            BaseSortingOrder = baseSortingOrder;
-            AdditionalSortingOrder = additionalSortingOrder;
             _sprite = _spriteRenderer.sprite;
 
             if (overrideSprite != null)
@@ -64,13 +57,13 @@ namespace UnicoCaseStudy.Gameplay.Logic
 
         private void UpdateSortingOrder()
         {
-            _spriteRenderer.sortingOrder = BaseSortingOrder + AdditionalSortingOrder;
-            _highlightSpriteRenderer.sortingOrder = BaseSortingOrder + AdditionalSortingOrder + 1;
+            _spriteRenderer.sortingOrder = SortingOrderConstants.GameplayTiles;
+            _highlightSpriteRenderer.sortingOrder = SortingOrderConstants.GameplayTileHighlights;
         }
 
-        public void SetOccupyingBoardItem(BoardItem boardItem)
+        public void SetOccupyingDefender(Defender boardItem)
         {
-            OccupyingBoardItem = boardItem;
+            OccupyingDefender = boardItem;
         }
 
         public void SetHighlight(bool highlight, bool impact = true)

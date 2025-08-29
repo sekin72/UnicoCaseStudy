@@ -45,4 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <GameSettings>k__BackingField: {fileID: 11400000, guid: ef918b631439e7d48ba506526603329e, type: 2}
+  <LevelConfig>k__BackingField: {fileID: 11400000, guid: 576489b03ed925a46acf707a27b93b62, type: 2}
   _systemsCollection: {fileID: 11400000, guid: a81e58ce53a7d604fbff0e8f6595b0cd, type: 2}

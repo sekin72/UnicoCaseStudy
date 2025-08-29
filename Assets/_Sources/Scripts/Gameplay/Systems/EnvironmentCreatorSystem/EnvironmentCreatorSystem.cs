@@ -1,23 +1,20 @@
-using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using GameClient.GameData;
 using UnicoCaseStudy.Gameplay.Logic;
-using UnicoCaseStudy.Managers.Asset;
 using UnicoCaseStudy.Managers.Pool;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
-namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
+namespace UnicoCaseStudy.Gameplay.Systems
 {
     [CreateAssetMenu(fileName = "EnvironmentCreatorSystem", menuName = "UnicoCaseStudy/Systems/EnvironmentCreatorSystem", order = 1)]
     public sealed class EnvironmentCreatorSystem : GameSystem
     {
+        public Tile[,] GroundTileArray => _view.GroundTileArray;
+        public Tile[,] GameplayTileArray => _view.GameplayTileArray;
+
         private EnvironmentCreatorSystemView _view;
 
         private PoolManager _poolManager;
-
-        public List<Tile> Path { get; private set; }
 
         public override async UniTask Initialize(GameSession gameSession, CancellationToken cancellationToken)
         {

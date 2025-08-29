@@ -83,7 +83,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
 
                 GameplayTile gameplayTile = null;
 
-                if (hit.Value.collider.transform.parent.TryGetComponent<BoardItem>(out var boardItem))
+                if (hit.Value.collider.transform.parent.TryGetComponent<Defender>(out var boardItem))
                 {
                     gameplayTile = boardItem.AttachedGameplayTile;
                 }

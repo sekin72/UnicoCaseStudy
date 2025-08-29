@@ -10,7 +10,7 @@ using UnicoCaseStudy.Managers.Pool;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
+namespace UnicoCaseStudy.Gameplay.Systems
 {
     public class EnvironmentCreatorSystemView : MonoBehaviour, IDisposable
     {
@@ -19,8 +19,8 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
         private GameObject _forestGO;
         private GameObject _villageGO;
 
-        private Tile[,] _groundTileArray;
-        private Tile[,] _gameplayTileArray;
+        public Tile[,] GroundTileArray { get; private set; }
+        public Tile[,] GameplayTileArray { get; private set; }
 
         private GameObject _boardParent;
 
@@ -50,7 +50,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             {
                 for (var j = 0; j < _totalHeight; j++)
                 {
-                    _groundTileArray[i, j] = new Tile
+                    GroundTileArray[i, j] = new Tile
                     {
                         TileObject = _poolManager.GetGameObject(_tileKey),
                         BoardIndex = new Vector2Int(i, j),
@@ -58,9 +58,9 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                         TileID = 0
                     };
 
-                    _groundTileArray[i, j].TileObject.name = $"Tile_{i}_{j}";
-                    _groundTileArray[i, j].TileObject.transform.SetParent(_boardParent.transform);
-                    _groundTileArray[i, j].TileObject.transform.position = _groundTileArray[i, j].Position;
+                    GroundTileArray[i, j].TileObject.name = $"Tile_{i}_{j}";
+                    GroundTileArray[i, j].TileObject.transform.SetParent(_boardParent.transform);
+                    GroundTileArray[i, j].TileObject.transform.position = GroundTileArray[i, j].Position;
                 }
             }
         }
@@ -80,8 +80,8 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             _gameplayWidth = _gameSettings.GameplayWidth;
             _gameplayHeight = _gameSettings.GameplayHeight;
 
-            _groundTileArray = new Tile[_totalWidth, _totalHeight];
-            _gameplayTileArray = new Tile[_gameplayWidth, _gameplayHeight];
+            GroundTileArray = new Tile[_totalWidth, _totalHeight];
+            GameplayTileArray = new Tile[_gameplayWidth, _gameplayHeight];
         }
 
         public void Dispose()
@@ -96,7 +96,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
 
         public Tile GetTile(Vector2Int index)
         {
-            return _groundTileArray[index.x, index.y];
+            return GroundTileArray[index.x, index.y];
         }
 
         public async UniTask CreateGroundTiles(CancellationToken cancellationToken)
@@ -115,7 +115,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             {
                 for (var j = 0; j < _totalHeight; j++)
                 {
-                    var tile = _groundTileArray[i, j];
+                    var tile = GroundTileArray[i, j];
                     var groundTile = _poolManager.GetGameObject(poolKey);
                     groundTile.transform.SetParent(tile.TileObject.transform);
                     groundTile.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
@@ -154,8 +154,8 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                 for (int j = 0; j < _gameplayHeight; j++)
                 {
                     var tilePosition = new Vector2Int(startX + i, startY + j);
-                    var tile = _groundTileArray[tilePosition.x, tilePosition.y];
-                    _gameplayTileArray[i, j] = tile;
+                    var tile = GroundTileArray[tilePosition.x, tilePosition.y];
+                    GameplayTileArray[i, j] = tile;
 
                     var (isChecker, overrideSprite) = DecideBackgroundSprite(i, j);
 
@@ -163,7 +163,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     gameplayTile.transform.SetParent(tile.TileObject.transform);
                     gameplayTile.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
                     gameplayTile.transform.localScale = Vector3.one;
-                    gameplayTile.Initialize(tile, new Vector2Int(i, j), (_gameplayHeight - j) * 100, isChecker, _gameSettings, overrideSprite: overrideSprite);
+                    gameplayTile.Initialize(tile, new Vector2Int(i, j), isChecker, _gameSettings, overrideSprite: overrideSprite);
                     _gameplayTiles.Add(gameplayTile);
                 }
             }
@@ -171,7 +171,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
 
         public void FinalBoardAdjustments()
         {
-            CenterBoardToShowPathTiles();
+            CenterCameraToShowGameplayBoard();
 
             _boardParent.transform.position += Vector3.up * _gameSettings.BoardYOffset;
 
@@ -187,7 +187,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             }
 
             _groundTilesList.Clear();
-            _groundTileArray = null;
+            GroundTileArray = null;
         }
 
         private void DisposeGameplayTiles()
@@ -199,22 +199,22 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
             }
 
             _gameplayTiles.Clear();
-            _gameplayTileArray = null;
+            GameplayTileArray = null;
         }
 
-        private void CenterBoardToShowPathTiles()
+        private void CenterCameraToShowGameplayBoard()
         {
-            Vector3 camPos = _camera.transform.position;
             Vector3 camDir = _camera.transform.forward;
-
-            float t = -camPos.z / camDir.z;
-            Vector3 screenPlanePoint = camPos + (camDir * t); // hit XY plane (z = 0)
 
             float boardWorldWidth = (_totalWidth - 1);
             float boardWorldHeight = (_totalHeight - 1);
             Vector3 boardCenter = new(boardWorldWidth * 0.5f, boardWorldHeight * 0.5f, 0f);
 
-            _boardParent.transform.position = screenPlanePoint - boardCenter;
+            // Set camera position so that its forward ray intersects the center of the board
+            float t = -_camera.transform.position.z / camDir.z;
+            Vector3 screenPlanePoint = _camera.transform.position + (camDir * t);
+            Vector3 centerOffset = boardCenter - screenPlanePoint;
+            _camera.transform.position += centerOffset;
 
             float step = 1f;
             int maxSteps = 100;
@@ -226,7 +226,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     break;
                 }
 
-                _boardParent.transform.position += camDir * step;
+                _camera.transform.position -= camDir * step;
             }
         }
 

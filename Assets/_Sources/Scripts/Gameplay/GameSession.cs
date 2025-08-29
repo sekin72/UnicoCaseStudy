@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using deVoid.Utils;
 using UnicoCaseStudy.Configs;
+using UnicoCaseStudy.Gameplay.Signal;
 using UnicoCaseStudy.Gameplay.Systems;
 using UnicoCaseStudy.Managers.Data;
 using UnicoCaseStudy.Managers.Data.Storages;
@@ -76,6 +78,8 @@ namespace UnicoCaseStudy.Gameplay
             {
                 await system.Initialize(this, cancellationToken);
             }
+
+            Signals.Get<LevelFinishedSignal>().AddListener(LevelFinished);
         }
 
         public async UniTask Activate()
@@ -99,6 +103,8 @@ namespace UnicoCaseStudy.Gameplay
             }
 
             _deactivated = true;
+
+            Signals.Get<LevelFinishedSignal>().RemoveListener(LevelFinished);
 
             if (_tickables.Count > 0)
             {
@@ -159,7 +165,7 @@ namespace UnicoCaseStudy.Gameplay
             }
         }
 
-        public void LevelFinished(bool success)
+        private void LevelFinished(bool success)
         {
             if (_deactivated)
             {

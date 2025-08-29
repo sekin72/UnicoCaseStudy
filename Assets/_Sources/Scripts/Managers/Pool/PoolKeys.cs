@@ -23,18 +23,11 @@
         GroundTile = 601,
         GameplayTile = 602,
 
-        BoardItem = 650,
-
-        Defender1 = 1000,
-        Defender2 = 1001,
-        Defender3 = 1002,
+        Defender = 650,
+        Enemy = 651,
 
         IdleVFX1 = 1500,
         IdleVFX2 = 1501,
         IdleVFX3 = 1502,
-
-        Enemy1 = 2000,
-        Enemy2 = 2001,
-        Enemy3 = 2002,
     }
 }

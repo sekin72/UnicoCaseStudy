@@ -1,14 +1,13 @@
+using UnicoCaseStudy;
 using UnicoCaseStudy.Managers.Pool;
 using UnityEngine;
 
 namespace GameClient.GameData
 {
     [CreateAssetMenu(fileName = "DefenderConfig", menuName = "UnicoCaseStudy/GameConfig/DefenderConfig", order = 3)]
-    public class DefenderConfig : ScriptableObject
+    public class DefenderConfig : CharacterConfig
     {
-        public PoolKeys PoolKey;
         public PoolKeys IdleVFXPoolKey;
-        public Sprite Sprite;
 
         public float PlacementCooldown = 0;
         public int Damage;

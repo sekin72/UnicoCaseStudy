@@ -8,7 +8,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
     {
         private DefencePlacementSystem _defencePlacementSystem;
 
-        private BoardItem _toBeSwappedBoardItem;
+        private Defender _toBeSwappedBoardItem;
         private GameplayTile _lastHighlighted;
 
         public SwapPlacementInput(DefencePlacementSystem defencePlacementSystem)
@@ -20,7 +20,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
         {
             _defencePlacementSystem.HitGameplayTile(eventData, out var hit);
 
-            hit.Value.collider.transform.parent.TryGetComponent<BoardItem>(out var boardItem);
+            hit.Value.collider.transform.parent.TryGetComponent<Defender>(out var boardItem);
             hit.Value.collider.transform.parent.TryGetComponent<GameplayTile>(out var gameplayTile);
 
             if (boardItem == null && gameplayTile == null)
@@ -35,9 +35,9 @@ namespace UnicoCaseStudy.Gameplay.Systems
                 return true;
             }
 
-            if(boardItem == null && gameplayTile.OccupyingBoardItem != null)
+            if(boardItem == null && gameplayTile.OccupyingDefender != null)
             {
-                boardItem = gameplayTile.OccupyingBoardItem;
+                boardItem = gameplayTile.OccupyingDefender;
             }
 
             if (_toBeSwappedBoardItem == null && boardItem == null)
@@ -117,7 +117,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
                 else
                 {
                     hit.Value.collider.transform.parent.TryGetComponent(out gameplayTile);
-                    boardItem = gameplayTile.OccupyingBoardItem;
+                    boardItem = gameplayTile.OccupyingDefender;
                 }
 
                 _lastHighlighted = gameplayTile;
@@ -134,7 +134,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
             }
         }
 
-        private static void SwapTwoBoardItems(BoardItem boardItem1, BoardItem boardItem2)
+        private static void SwapTwoBoardItems(Defender boardItem1, Defender boardItem2)
         {
             if (boardItem1 == boardItem2)
             {
@@ -152,21 +152,21 @@ namespace UnicoCaseStudy.Gameplay.Systems
             boardItem2.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
             boardItem2.transform.localScale = Vector3.one;
 
-            gameplayTile1.SetOccupyingBoardItem(boardItem2);
-            gameplayTile2.SetOccupyingBoardItem(boardItem1);
+            gameplayTile1.SetOccupyingDefender(boardItem2);
+            gameplayTile2.SetOccupyingDefender(boardItem1);
 
             boardItem1.SetAttachedGameplayTile(gameplayTile2);
             boardItem2.SetAttachedGameplayTile(gameplayTile1);
         }
 
-        private static void MoveBoardItemTo(BoardItem boardItem, GameplayTile gameplayTile)
+        private static void MoveBoardItemTo(Defender boardItem, GameplayTile gameplayTile)
         {
-            boardItem.AttachedGameplayTile.SetOccupyingBoardItem(null);
+            boardItem.AttachedGameplayTile.SetOccupyingDefender(null);
 
             boardItem.transform.SetParent(gameplayTile.transform);
             boardItem.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
             boardItem.transform.localScale = Vector3.one;
-            gameplayTile.SetOccupyingBoardItem(boardItem);
+            gameplayTile.SetOccupyingDefender(boardItem);
             boardItem.SetAttachedGameplayTile(gameplayTile);
         }
     }
