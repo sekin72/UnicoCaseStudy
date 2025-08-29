@@ -10,9 +10,10 @@ namespace GameClient.GameData
         public PoolKeys IdleVFXPoolKey;
         public Sprite Sprite;
 
+        public float PlacementCooldown = 0;
         public int Damage;
         public int Range = 1;
-        public float Cooldown;
+        public float AttackCooldown;
         public Vector3Int Direction = Vector3Int.forward;
     }
 }

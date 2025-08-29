@@ -163,7 +163,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.EnvironmentCreatorSystem
                     gameplayTile.transform.SetParent(tile.TileObject.transform);
                     gameplayTile.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
                     gameplayTile.transform.localScale = Vector3.one;
-                    gameplayTile.Initialize(tile, new Vector2Int(i, j), (_gameplayHeight - j) * 100, isChecker, overrideSprite: overrideSprite);
+                    gameplayTile.Initialize(tile, new Vector2Int(i, j), (_gameplayHeight - j) * 100, isChecker, _gameSettings, overrideSprite: overrideSprite);
                     _gameplayTiles.Add(gameplayTile);
                 }
             }

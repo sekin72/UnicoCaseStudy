@@ -33,3 +33,5 @@ MonoBehaviour:
     Middle: {fileID: 161678951, guid: 3df8b6677ef974c42885379541272075, type: 3}
     Bottom: {fileID: 0}
     BG: {fileID: 1005506691, guid: 3df8b6677ef974c42885379541272075, type: 3}
+  PositiveHighlightColor: {r: 0, g: 1, b: 0, a: 0.19607843}
+  NegativeHighlightColor: {r: 1, g: 0, b: 0, a: 0.19607843}

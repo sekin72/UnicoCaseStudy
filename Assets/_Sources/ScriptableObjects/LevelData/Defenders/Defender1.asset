@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PoolKey: 1000
   IdleVFXPoolKey: 1500
-  Sprite: {fileID: 21300000, guid: 565184a35d5859542b117c894581cf3e, type: 3}
+  Sprite: {fileID: 21300000, guid: c93b03c6bd9d6c840b5bec1641fd0574, type: 3}
+  PlacementCooldown: 5
   Damage: 0
   Range: 1
-  Cooldown: 0
+  AttackCooldown: 0
   Direction: {x: 0, y: 0, z: 1}

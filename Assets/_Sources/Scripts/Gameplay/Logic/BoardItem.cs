@@ -12,26 +12,22 @@ namespace UnicoCaseStudy.Gameplay.Logic
         [SerializeField] private Transform _idleVFXParent;
         public GameObject IdleVFX { get; private set; }
         private Sprite _sprite;
-        private int _baseSortingOrder;
-        private int _additionalSortingOrder;
 
-        public void Initialize(GameplayTile attachedGameplayTile, int baseSortingOrder, int additionalSortingOrder, Sprite overrideSprite,
+        public void Initialize(
+            GameplayTile attachedGameplayTile,
+            Sprite overrideSprite,
             GameObject idleVFX)
         {
             _sprite = _spriteRenderer.sprite;
-
-            AttachedGameplayTile = attachedGameplayTile;
-            _baseSortingOrder = baseSortingOrder;
-            _additionalSortingOrder = additionalSortingOrder;
-
-            _sprite = overrideSprite;
-            _spriteRenderer.sprite = _sprite;
 
             IdleVFX = idleVFX;
             IdleVFX.transform.SetParent(_idleVFXParent);
             IdleVFX.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
 
-            UpdateSortingOrder();
+            SetAttachedGameplayTile(attachedGameplayTile);
+
+            _sprite = overrideSprite;
+            _spriteRenderer.sprite = _sprite;
         }
 
         public void Dispose()
@@ -41,12 +37,18 @@ namespace UnicoCaseStudy.Gameplay.Logic
 
         private void UpdateSortingOrder()
         {
-            _spriteRenderer.sortingOrder = _baseSortingOrder + _additionalSortingOrder;
+            _spriteRenderer.sortingOrder = AttachedGameplayTile.BaseSortingOrder + AttachedGameplayTile.AdditionalSortingOrder + 10;
 
             foreach (var renderer in IdleVFX.GetComponentsInChildren<ParticleSystemRenderer>())
             {
                 renderer.sortingOrder = _spriteRenderer.sortingOrder - 1;
             }
+        }
+
+        public void SetAttachedGameplayTile(GameplayTile gameplayTile)
+        {
+            AttachedGameplayTile = gameplayTile;
+            UpdateSortingOrder();
         }
     }
 }

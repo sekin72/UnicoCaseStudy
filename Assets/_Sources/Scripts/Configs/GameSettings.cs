@@ -19,6 +19,9 @@ namespace UnicoCaseStudy.Configs
         public BackgroundSpriteWrapper LightGreenSpriteWrapper;
         public BackgroundSpriteWrapper DarkGreenSpriteWrapper;
         public BackgroundSpriteWrapper GreySpriteWrapper;
+
+        public Color PositiveHighlightColor = Color.green;
+        public Color NegativeHighlightColor = Color.red;
     }
 
     [Serializable]

@@ -10,7 +10,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.InputSystem
     [CreateAssetMenu(fileName = "InputSystem", menuName = "UnicoCaseStudy/Systems/InputSystem", order = 4)]
     public sealed class InputSystem : GameSystem
     {
-        private DefenceSelectorSystem _defenceSelectorSystem;
+        private DefencePlacementSystem _defenceSelectorSystem;
 
         private EasyInputManager _easyInputManager;
 
@@ -18,7 +18,7 @@ namespace UnicoCaseStudy.Gameplay.Systems.InputSystem
         {
             await base.Initialize(gameSession, cancellationToken);
 
-            _defenceSelectorSystem = gameSession.GetSystem<DefenceSelectorSystem>();
+            _defenceSelectorSystem = gameSession.GetSystem<DefencePlacementSystem>();
             _easyInputManager = AppManager.GetManager<GameplayManager>().GameplaySceneController.EasyInputManager;
         }
 
@@ -39,24 +39,24 @@ namespace UnicoCaseStudy.Gameplay.Systems.InputSystem
 
         private void SubscribeEvents()
         {
+            _easyInputManager.Selected += OnInputSelected;
             _easyInputManager.Moved += OnInputMoved;
-            _easyInputManager.Released += OnInputReleased;
         }
 
         private void UnsubscribeEvents()
         {
+            _easyInputManager.Selected -= OnInputSelected;
             _easyInputManager.Moved -= OnInputMoved;
-            _easyInputManager.Released -= OnInputReleased;
+        }
+
+        private void OnInputSelected(PointerEventData eventData)
+        {
+            _defenceSelectorSystem.OnInputSelected(eventData);
         }
 
         private void OnInputMoved(PointerEventData eventData)
         {
             _defenceSelectorSystem.OnInputMoved(eventData);
-        }
-
-        private void OnInputReleased(PointerEventData eventData)
-        {
-            _defenceSelectorSystem.OnInputReleased(eventData);
         }
     }
 }

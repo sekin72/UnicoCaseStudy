@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PoolKey: 1002
   IdleVFXPoolKey: 1502
-  Sprite: {fileID: 21300000, guid: 5671534378da9b8488fce65d1815c388, type: 3}
+  Sprite: {fileID: 21300000, guid: fea6fee3d47445b4c8440cc681f7f959, type: 3}
   Damage: 0
   Range: 1
   Cooldown: 0

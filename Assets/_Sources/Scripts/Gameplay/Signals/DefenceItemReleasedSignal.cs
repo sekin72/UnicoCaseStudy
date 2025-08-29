@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace UnicoCaseStudy.Gameplay.Signal
 {
-    public class DefenceItemSelectedSignal : ASignal<DefenceSelectorUI, PointerEventData>
+    public class DefenceItemReleasedSignal : ASignal<PointerEventData>
     {
     }
 }
