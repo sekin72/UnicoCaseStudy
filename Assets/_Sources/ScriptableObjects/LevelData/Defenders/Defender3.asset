@@ -15,7 +15,7 @@ MonoBehaviour:
   Sprite: {fileID: 21300000, guid: fea6fee3d47445b4c8440cc681f7f959, type: 3}
   IdleVFXPoolKey: 1502
   PlacementCooldown: 0
-  Damage: 0
+  Damage: 10
   Range: 1
-  AttackCooldown: 0
-  Direction: {x: 0, y: 0, z: 1}
+  AttackCooldown: 2
+  Direction: 0

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using deVoid.Utils;
 using GameClient.GameData;
+using UnicoCaseStudy.Gameplay.Signal;
 using UnicoCaseStudy.Managers.Pool;
 using UnityEngine;
 
@@ -39,6 +41,8 @@ namespace UnicoCaseStudy.Gameplay.Systems
                 _waveQueue.Enqueue(enemyConfig);
             }
 
+            Signals.Get<EnemyDiedSignal>().AddListener(OnEnemyDied);
+
             _gameplayX = (Session.GameSettings.TotalWidth - Session.GameSettings.GameplayWidth) / 2;
             _gameplayTopY = (Session.GameSettings.TotalHeight + Session.GameSettings.GameplayHeight) / 2;
 
@@ -49,6 +53,8 @@ namespace UnicoCaseStudy.Gameplay.Systems
 
         public override void Deactivate()
         {
+            Signals.Get<EnemyDiedSignal>().RemoveListener(OnEnemyDied);
+
             if (_delayCTS != null)
             {
                 _delayCTS.Cancel();
@@ -99,6 +105,18 @@ namespace UnicoCaseStudy.Gameplay.Systems
             }
 
             LoadEnemies().Forget();
+        }
+
+        private void OnEnemyDied(Enemy enemy)
+        {
+            enemy.Deactivate();
+            _poolManager.SafeReleaseObject(PoolKeys.Enemy, enemy.gameObject);
+            _placedEnemies.Remove(enemy);
+
+            if (_waveQueue.Count == 0 && _placedEnemies.Count <= 0)
+            {
+                Signals.Get<LevelFinishedSignal>().Dispatch(true);
+            }
         }
     }
 }

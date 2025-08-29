@@ -13,6 +13,12 @@ namespace GameClient.GameData
         public int Damage;
         public int Range = 1;
         public float AttackCooldown;
-        public Vector3Int Direction = Vector3Int.forward;
+        public AttackDirection Direction = AttackDirection.Forward;
+    }
+
+    public enum AttackDirection
+    {
+        Forward,
+        EveryDirection
     }
 }

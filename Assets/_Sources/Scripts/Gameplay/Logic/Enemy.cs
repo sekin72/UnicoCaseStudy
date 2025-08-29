@@ -11,6 +11,9 @@ namespace UnicoCaseStudy
 {
     public class Enemy : BoardItem
     {
+        public int EffectiveHealth { get; private set; }
+        public int RealHealth { get; private set; }
+
         public Vector2Int CurrentTile { get; private set; }
         public Vector2Int TargetTile { get; private set; }
         private EnemyConfig _enemyConfig;
@@ -30,6 +33,9 @@ namespace UnicoCaseStudy
             UpdateSortingOrder();
 
             _moveTweenCTS = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+
+            RealHealth = _enemyConfig.Health;
+            EffectiveHealth = RealHealth;
         }
 
         public void Deactivate()
@@ -92,6 +98,17 @@ namespace UnicoCaseStudy
             _moveTween = transform.DOMove(target, duration).SetEase(Ease.Linear);
 
             await _moveTween.ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken: _moveTweenCTS.Token);
+        }
+
+        public void TakeDamage(int damage)
+        {
+            RealHealth -= damage;
+            EffectiveHealth -= damage;
+
+            if (RealHealth <= 0)
+            {
+                Signals.Get<EnemyDiedSignal>().Dispatch(this);
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace UnicoCaseStudy.Gameplay.Logic
         public GameObject IdleVFX { get; protected set; }
         protected Sprite _sprite;
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             AttachedGameplayTile = null;
         }
