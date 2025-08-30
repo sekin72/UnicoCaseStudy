@@ -10,7 +10,6 @@ namespace GameClient.GameData
     {
         public PoolKeys IdleVFXPoolKey;
         public PoolKeys BulletPoolKey;
-        public PoolKeys ImpactPoolKey;
 
         public float PlacementCooldown = 0;
         public int Damage;

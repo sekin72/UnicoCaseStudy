@@ -48,7 +48,7 @@ namespace UnicoCaseStudy.Gameplay.Systems
             _image.sprite = defenderConfig.Sprite;
             _image.raycastTarget = true;
 
-            _onColor = _remainingText.TextFields[0].color;
+            _onColor = Color.white;
             _offColor = Color.gray;
             _remainingText.Text = _remainingCount.ToString();
 

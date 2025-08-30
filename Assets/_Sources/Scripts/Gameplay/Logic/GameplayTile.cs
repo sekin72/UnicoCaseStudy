@@ -26,6 +26,7 @@ namespace UnicoCaseStudy.Gameplay.Logic
             GameSettings gameSettings,
             Sprite overrideSprite = null)
         {
+            OccupyingDefender = null;
             AttachedTile = tile;
             GameplayIndex = gameplayIndex;
             _sprite = _spriteRenderer.sprite;
@@ -53,6 +54,8 @@ namespace UnicoCaseStudy.Gameplay.Logic
 
         public void Dispose()
         {
+            AttachedTile = null;
+            OccupyingDefender = null;
         }
 
         private void UpdateSortingOrder()

@@ -33,6 +33,11 @@ namespace UnicoCaseStudy.Gameplay.Logic
             _sprite = config.Sprite;
             _spriteRenderer.sprite = _sprite;
 
+            _targetIndexes.Clear();
+            _targetsInReach.Clear();
+            _fillTween?.Kill();
+            _fillerRenderer.gameObject.SetActive(false);
+
             IdleVFX = idleVFX;
             IdleVFX.transform.SetParent(_idleVFXParent);
             IdleVFX.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
@@ -131,7 +136,6 @@ namespace UnicoCaseStudy.Gameplay.Logic
 
             var bullet = _poolManager.GetGameObject(_defenderConfig.BulletPoolKey).GetComponent<Bullet>();
             bullet.Initialize(_defenderConfig.BulletPoolKey,
-                                _defenderConfig.ImpactPoolKey,
                                 this,
                                 _defenderConfig,
                                 enemy);

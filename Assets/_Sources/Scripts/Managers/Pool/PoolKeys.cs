@@ -31,7 +31,5 @@
         Bullet1 = 2000,
         Bullet2 = 2001,
         Bullet3 = 2002,
-
-        Impact = 2500,
     }
 }
