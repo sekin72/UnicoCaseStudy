@@ -58,6 +58,8 @@ namespace UnicoCaseStudy.Gameplay.Systems
 
         public override void Deactivate()
         {
+            _defenceSelectorMover.Deactivate();
+
             Signals.Get<DefenceItemSelectedSignal>().RemoveListener(OnDefenceUISelected);
             Signals.Get<DefenceItemReleasedSignal>().RemoveListener(OnDefenceUIReleased);
 

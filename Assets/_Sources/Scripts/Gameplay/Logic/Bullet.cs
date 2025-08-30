@@ -1,6 +1,5 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using GameClient.GameData;
 using UnicoCaseStudy.Gameplay.Logic;
 using UnicoCaseStudy.Managers.Pool;
@@ -18,8 +17,10 @@ namespace UnicoCaseStudy
         private Enemy _enemy;
 
         private CancellationTokenSource _attackCTS;
-        private Tween _moveTween;
 
+        private float _speed = 5;
+        private bool _moving;
+        private bool _reachedEnemy;
         private bool _disposed;
 
         public void Initialize(
@@ -37,6 +38,8 @@ namespace UnicoCaseStudy
 
             _attackCTS = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
 
+            _reachedEnemy = false;
+            _moving = false;
             _disposed = false;
 
             MakeBulletAnimation().Forget();
@@ -49,6 +52,8 @@ namespace UnicoCaseStudy
                 return;
             }
 
+            _reachedEnemy = false;
+            _moving = false;
             _disposed = true;
             if (_attackCTS != null)
             {
@@ -57,26 +62,40 @@ namespace UnicoCaseStudy
                 _attackCTS = null;
             }
 
-            _moveTween?.Kill();
-
             _poolManager.SafeReleaseObject(_bulletPoolKey, gameObject);
         }
 
         private async UniTask MakeBulletAnimation()
         {
+            _moving = true;
+            _reachedEnemy = false;
             _enemy.TakeDamageReal(_defenderConfig.Damage);
 
             transform.position = _defender.transform.position;
 
-            var duration = Vector3.Distance(_enemy.transform.position, transform.position) / 8f;
-            _moveTween?.Kill();
-            _moveTween = transform.DOMove(_enemy.transform.position, duration).SetEase(Ease.Linear);
-
-            await _moveTween.ToUniTask(cancellationToken: _attackCTS.Token);
+            await UniTask.WaitUntil(() => _reachedEnemy, cancellationToken: _attackCTS.Token);
 
             _enemy.TakeDamageEffective(_defenderConfig.Damage);
 
             Dispose();
+
+            _defender.OnBulletReached(this);
+        }
+
+        private void Update()
+        {
+            if (!_moving || _disposed)
+            {
+                return;
+            }
+
+            transform.position = Vector3.MoveTowards(transform.position, _enemy.transform.position, _speed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, _enemy.transform.position) <= 0.1f)
+            {
+                _reachedEnemy = true;
+                _moving = false;
+            }
         }
     }
 }

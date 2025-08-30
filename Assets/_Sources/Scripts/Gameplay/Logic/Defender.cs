@@ -19,6 +19,7 @@ namespace UnicoCaseStudy.Gameplay.Logic
         private DefenderConfig _defenderConfig;
         private List<Vector2Int> _targetIndexes = new();
         private List<Enemy> _targetsInReach = new();
+        private List<Bullet> _bullets = new();
 
         private bool _canAttack = false;
         private CancellationTokenSource _attackCooldownCTS;
@@ -33,6 +34,7 @@ namespace UnicoCaseStudy.Gameplay.Logic
             _sprite = config.Sprite;
             _spriteRenderer.sprite = _sprite;
 
+            _bullets.Clear();
             _targetIndexes.Clear();
             _targetsInReach.Clear();
             _fillTween?.Kill();
@@ -102,6 +104,11 @@ namespace UnicoCaseStudy.Gameplay.Logic
                 _makeAttackCTS = null;
             }
 
+            foreach (var bullet in _bullets)
+            {
+                bullet.Dispose();
+            }
+
             base.Dispose();
         }
 
@@ -139,6 +146,7 @@ namespace UnicoCaseStudy.Gameplay.Logic
                                 this,
                                 _defenderConfig,
                                 enemy);
+            _bullets.Add(bullet);
         }
 
         private void OnEnemyChangedTile(EnemyChangedTileSignalProperties signalProperties)
@@ -187,6 +195,11 @@ namespace UnicoCaseStudy.Gameplay.Logic
             {
                 _targetsInReach.Remove(enemy);
             }
+        }
+
+        public void OnBulletReached(Bullet bullet)
+        {
+            _bullets.Remove(bullet);
         }
     }
 }
