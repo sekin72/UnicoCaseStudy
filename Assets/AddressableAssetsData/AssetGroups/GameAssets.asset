@@ -18,12 +18,12 @@ MonoBehaviour:
   m_GUID: 598640079dd4047448f34cf4c2155b21
   m_SerializeEntries:
   - m_GUID: 0153ea65ab2390445aa51d082e9f6dfd
-    m_Address: Assets/_Sources/Prefabs/Logic/Enemy.prefab
+    m_Address: Enemy
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 12366c3f588598845863f5ec197cdcf3
-    m_Address: Assets/_Sources/Prefabs/Gameplay/VFX/IdleVFXs/IdleVFX3.prefab
+    m_Address: IdleVFX3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -33,12 +33,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c8a5039689378348badca2c217b2f69
-    m_Address: Assets/_Sources/Prefabs/Gameplay/Tiles/BoardItem.prefab
+    m_Address: BoardItem
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 60e48ebeb5fca064d8d44729317ccd33
-    m_Address: Assets/_Sources/Prefabs/Gameplay/Tiles/VillagePrefab.prefab
+    m_Address: VillagePrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 71274c7783e9a4f44bdba8420acdced2
-    m_Address: Assets/_Sources/Prefabs/Gameplay/VFX/IdleVFXs/IdleVFX1.prefab
+    m_Address: IdleVFX1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -63,12 +63,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a806e8aee25a47e44b014444d6c29f6e
-    m_Address: Assets/_Sources/Prefabs/Gameplay/VFX/IdleVFXs/IdleVFX2.prefab
+    m_Address: IdleVFX2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bc70986bae1e9604cacbe899213daf0b
-    m_Address: Assets/_Sources/Prefabs/Gameplay/Tiles/EnvironmentItem.prefab
+    m_Address: EnvironmentItem
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

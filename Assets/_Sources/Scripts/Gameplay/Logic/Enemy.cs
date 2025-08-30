@@ -5,6 +5,8 @@ using DG.Tweening;
 using GameClient.GameData;
 using UnicoCaseStudy.Gameplay.Logic;
 using UnicoCaseStudy.Gameplay.Signal;
+using UnicoCaseStudy.Managers.Sound;
+using UnicoCaseStudy.Managers.Vibration;
 using UnicoCaseStudy.Utilities.MonoBehaviourUtilities;
 using UnityEngine;
 
@@ -14,6 +16,9 @@ namespace UnicoCaseStudy
     {
         [SerializeField] private Animator _animator;
         [SerializeField] private AnimationEventTriggerDetector _animationEventTriggerDetector;
+
+        private SoundManager _soundManager;
+        private VibrationManager _vibrationManager;
 
         public int EffectiveHealth { get; private set; }
         public int RealHealth { get; private set; }
@@ -27,6 +32,9 @@ namespace UnicoCaseStudy
 
         public void Initialize(CharacterConfig config, Vector2Int currentTile, Vector2Int targetTile)
         {
+            _soundManager = AppManager.GetManager<SoundManager>();
+            _vibrationManager = AppManager.GetManager<VibrationManager>();
+
             _sprite = config.Sprite;
             _spriteRenderer.sprite = _sprite;
 
@@ -42,6 +50,7 @@ namespace UnicoCaseStudy
             RealHealth = _enemyConfig.Health;
             EffectiveHealth = RealHealth;
 
+            _animator.enabled = true;
             _animator.runtimeAnimatorController = _enemyConfig.AnimatorController;
         }
 
@@ -52,6 +61,7 @@ namespace UnicoCaseStudy
                 return;
             }
 
+            _animator.enabled = false;
             _animationEventTriggerDetector.AnimEventOccured -= OnAnimEventOccured;
             _moveTweenCTS.Cancel();
             _moveTweenCTS.Dispose();
@@ -116,11 +126,15 @@ namespace UnicoCaseStudy
             _moveTween?.Pause();
             if (RealHealth <= 0)
             {
+                _vibrationManager.Vibrate(VibrationType.MediumImpact);
                 _animator.SetTrigger(AnimationConstants.Death);
+                _soundManager.PlayOneShot(SoundKeys.Positive);
             }
             else
             {
+                _vibrationManager.Vibrate(VibrationType.LightImpact);
                 _animator.SetTrigger(AnimationConstants.Damage);
+                _soundManager.PlayOneShot(SoundKeys.Attack);
             }
         }
 
@@ -133,6 +147,10 @@ namespace UnicoCaseStudy
             else if (obj.Equals("Death"))
             {
                 Signals.Get<EnemyDiedSignal>().Dispatch(this);
+            }
+            else if (obj.Equals("Walk"))
+            {
+                _soundManager.PlayOneShot(SoundKeys.Walk);
             }
         }
     }

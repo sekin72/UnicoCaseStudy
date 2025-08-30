@@ -1,5 +1,4 @@
 using Sirenix.OdinInspector;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,8 +53,6 @@ namespace UnicoCaseStudy.UI.Components
             RectTransform.anchorMax = maxAnchor;
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(RectTransform);
-
-            EditorUtility.SetDirty(this);
         }
     }
 }

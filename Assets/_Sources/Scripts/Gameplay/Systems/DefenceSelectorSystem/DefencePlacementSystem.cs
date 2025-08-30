@@ -15,7 +15,6 @@ namespace UnicoCaseStudy.Gameplay.Systems
     [CreateAssetMenu(fileName = "DefencePlacementSystem", menuName = "UnicoCaseStudy/Systems/DefencePlacementSystem", order = 5)]
     public class DefencePlacementSystem : GameSystem
     {
-        [SerializeField] private List<DefenderConfig> _defenderConfigs;
         private List<DefenceSelectorUI> _defenceItemSelectors;
         private DefenceSelectorMover _defenceSelectorMover;
 
@@ -44,9 +43,10 @@ namespace UnicoCaseStudy.Gameplay.Systems
             Signals.Get<DefenceItemSelectedSignal>().AddListener(OnDefenceUISelected);
             Signals.Get<DefenceItemReleasedSignal>().AddListener(OnDefenceUIReleased);
 
-            for (int i = 0; i < _defenderConfigs.Count; i++)
+            var i = 0;
+            foreach (var defenderConfigPair in Session.LevelConfig.DefenderCount)
             {
-                _defenceItemSelectors[i].Initialize(_defenderConfigs[i], 5);
+                _defenceItemSelectors[i++].Initialize(Session.LevelConfig.GetDefenderConfig(defenderConfigPair.Key), defenderConfigPair.Value);
             }
 
             _placementInputType = PlacementInputTypes.None;

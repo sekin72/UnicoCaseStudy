@@ -3,9 +3,13 @@
     public enum SoundKeys
     {
         None,
-        SuccessSound,
-        LevelFailed,
-        LevelCompleted,
-        WilhelmScream
+        Alert,
+        Attack,
+        GameOver,
+        GameplayTheme,
+        MainMenuTheme,
+        Positive,
+        Success,
+        Walk,
     }
 }

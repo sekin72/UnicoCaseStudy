@@ -58,7 +58,11 @@ namespace UnicoCaseStudy.UI.Components
         public void Refresh()
         {
             OnState?.SetActive(IsOn);
-            OffState?.SetActive(!IsOn);
+
+            if (OffState != null)
+            {
+                OffState?.SetActive(!IsOn);
+            }
         }
     }
 }

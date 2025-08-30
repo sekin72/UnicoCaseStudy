@@ -17,5 +17,5 @@ MonoBehaviour:
   PlacementCooldown: 0
   Damage: 10
   Range: 1
-  AttackCooldown: 2
+  AttackCooldown: 5
   Direction: 1

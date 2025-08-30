@@ -7,6 +7,7 @@ using UnicoCaseStudy.Gameplay.UI.Popups.Pause;
 using UnicoCaseStudy.Managers.Loading;
 using UnicoCaseStudy.Managers.Pool;
 using UnicoCaseStudy.Managers.UI;
+using UnicoCaseStudy.Managers.Vibration;
 using UnicoCaseStudy.SceneControllers;
 using UnityEngine;
 

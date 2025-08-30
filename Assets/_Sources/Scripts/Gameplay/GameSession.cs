@@ -39,7 +39,7 @@ namespace UnicoCaseStudy.Gameplay
 
         [field: SerializeField] public GameSessionSaveStorage GameSessionSaveStorage { get; private set; }
         [field: SerializeField] public GameSettings GameSettings { get; private set; }
-        [field: SerializeField] public LevelConfig LevelConfig { get; private set; }
+        public LevelConfig LevelConfig { get; private set; }
         [SerializeField] private SystemsCollection _systemsCollection;
 
         private bool _deactivated;
@@ -71,6 +71,7 @@ namespace UnicoCaseStudy.Gameplay
             _lateTickables = ListPool<ILateTickable>.Get();
 
             GameSessionSaveStorage = _dataManager.Load<GameSessionSaveStorage>();
+            LevelConfig = GameSessionSaveStorage.LevelConfig;
 
             RegisterSystems(_systemsCollection);
 
@@ -179,13 +180,15 @@ namespace UnicoCaseStudy.Gameplay
 
             if (!success)
             {
+                _soundManager.PlayOneShot(SoundKeys.GameOver);
+                _vibrationManager.Vibrate(VibrationType.Failure);
                 _popupManager.Open<FailPopup, FailPopupData, FailPopupView>(
                     new FailPopupData(),
                     CancellationTokenSource.Token).Forget();
                 return;
             }
 
-            //_soundManager.PlayOneShot(SoundKeys.LevelCompleted);
+            _soundManager.PlayOneShot(SoundKeys.Success);
             _vibrationManager.Vibrate(VibrationType.Success);
             _popupManager.Open<WinPopup, WinPopupData, WinPopupView>(
                 new WinPopupData(),

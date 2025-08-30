@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnicoCaseStudy.Gameplay.Systems;
 using UnicoCaseStudy.Managers.Gameplay;
+using UnicoCaseStudy.Managers.Sound;
 using UnicoCaseStudy.UI.Components;
 using UnicoCaseStudy.Utilities.MonoBehaviourUtilities;
 using UnityEngine;
@@ -11,12 +12,23 @@ namespace UnicoCaseStudy.SceneControllers
 {
     public class GameplaySceneController : SceneControllerBase
     {
+        private SoundManager _soundManager;
+
         public EasyInputManager EasyInputManager;
         public List<DefenceSelectorUI> DefenceItemSelectors;
         public DefenceSelectorMover DefenceSelectorMover;
 
         [SerializeField] private GameObject _light;
         [SerializeField] private CFButton _pauseButton;
+
+        public override async UniTask Initialize(CancellationToken cancellationToken)
+        {
+            await base.Initialize(cancellationToken);
+
+            _soundManager = AppManager.GetManager<SoundManager>();
+            _soundManager.StopAll();
+            _soundManager.PlayOneShot(SoundKeys.GameplayTheme, playInLoop: true);
+        }
 
         public override async UniTask Activate(CancellationToken cancellationToken)
         {
@@ -32,6 +44,7 @@ namespace UnicoCaseStudy.SceneControllers
 
         public override UniTask Deactivate(CancellationToken cancellationToken)
         {
+            _soundManager.StopAll();
             _light.SetActive(false);
 
             AppManager.GetManager<GameplayManager>().Deactivate();

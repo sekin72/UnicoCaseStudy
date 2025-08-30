@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: SoundsList
   m_EditorClassIdentifier: 
   AudioClips:
-  - {fileID: 8300000, guid: a3acfc82b166bbb4a95d09d647758bd2, type: 3}
-  - {fileID: 8300000, guid: 526d27f0247e108429f655e35e92c70f, type: 3}
+  - {fileID: 8300000, guid: 27eed91fbc5c8494ebc60d097ab92df5, type: 3}
+  - {fileID: 8300000, guid: 77f86086c0ef8e641bfb82737276ef67, type: 3}
+  - {fileID: 8300000, guid: 3082502dbe5875b4d9b70241298c95c3, type: 3}
+  - {fileID: 8300000, guid: 9de9ca67018c47f4a8a554624a97e104, type: 3}
+  - {fileID: 8300000, guid: b369447ab7331aa4f9c71dcd14efc33d, type: 3}
   - {fileID: 8300000, guid: 3d2971597190b294b8d979667835929d, type: 3}
+  - {fileID: 8300000, guid: ffc7cd63cb4b79942a19b09b3afb1763, type: 3}
+  - {fileID: 8300000, guid: e993bc08f233e7a40819433c478253f6, type: 3}

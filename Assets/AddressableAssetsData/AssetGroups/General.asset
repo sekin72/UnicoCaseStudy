@@ -22,13 +22,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 50212e1b933350f4ba0bd88ae248ee4b
+    m_Address: GameplayScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5f88d0cae62f5fc49a391006e8d042ed
     m_Address: SoundController
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d56e6faace369604796f6e1f4e1afd50
-    m_Address: TextTween
+  - m_GUID: 68249001d1b7a73499765efb327b4888
+    m_Address: SoundsList
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc4e389d3fce97c4ea4f53828f6e0520
+    m_Address: MainMenuScene
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

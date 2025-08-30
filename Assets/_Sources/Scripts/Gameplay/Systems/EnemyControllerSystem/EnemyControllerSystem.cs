@@ -6,6 +6,9 @@ using deVoid.Utils;
 using GameClient.GameData;
 using UnicoCaseStudy.Gameplay.Signal;
 using UnicoCaseStudy.Managers.Pool;
+using UnicoCaseStudy.Managers.Sound;
+using UnicoCaseStudy.Managers.Vibration;
+using UnicoCaseStudy.Utilities.Extensions;
 using UnityEngine;
 
 namespace UnicoCaseStudy.Gameplay.Systems
@@ -14,6 +17,8 @@ namespace UnicoCaseStudy.Gameplay.Systems
     public class EnemyControllerSystem : GameSystem
     {
         private PoolManager _poolManager;
+        private SoundManager _soundManager;
+        private VibrationManager _vibrationManager;
 
         private EnvironmentCreatorSystem _environmentCreatorSystem;
 
@@ -29,6 +34,8 @@ namespace UnicoCaseStudy.Gameplay.Systems
         public override async UniTask Activate(CancellationToken cancellationToken)
         {
             _poolManager = AppManager.GetManager<PoolManager>();
+            _soundManager = AppManager.GetManager<SoundManager>();
+            _vibrationManager = AppManager.GetManager<VibrationManager>();
 
             _environmentCreatorSystem = Session.GetSystem<EnvironmentCreatorSystem>();
 
@@ -36,7 +43,17 @@ namespace UnicoCaseStudy.Gameplay.Systems
             _placedEnemies = new List<Enemy>();
 
             _delayBetweenSpawns = Session.LevelConfig.DelayBetweenSpawns;
-            foreach (var enemyConfig in Session.LevelConfig.EnemyWave)
+            var shuffleList = new List<EnemyConfig>();
+            foreach (var enemyConfigPair in Session.LevelConfig.EnemyCount)
+            {
+                for (int i = 0; i < enemyConfigPair.Value; i++)
+                {
+                    shuffleList.Add(Session.LevelConfig.GetEnemyConfig(enemyConfigPair.Key));
+                }
+            }
+
+            shuffleList.Shuffle();
+            foreach (var enemyConfig in shuffleList)
             {
                 _waveQueue.Enqueue(enemyConfig);
             }
@@ -45,8 +62,6 @@ namespace UnicoCaseStudy.Gameplay.Systems
 
             _gameplayX = (Session.GameSettings.TotalWidth - Session.GameSettings.GameplayWidth) / 2;
             _gameplayTopY = (Session.GameSettings.TotalHeight + Session.GameSettings.GameplayHeight) / 2;
-
-            await UniTask.Delay(TimeSpan.FromSeconds(_delayBetweenSpawns), cancellationToken: cancellationToken);
 
             LoadEnemies().Forget();
         }
@@ -91,6 +106,9 @@ namespace UnicoCaseStudy.Gameplay.Systems
             _placedEnemies.Add(enemyBoardItem);
 
             enemyBoardItem.StartMovement().Forget();
+
+            _soundManager.PlayOneShot(SoundKeys.Alert);
+            _vibrationManager.Vibrate(VibrationType.Warning);
 
             _delayCTS = new CancellationTokenSource();
             await UniTask.Delay(TimeSpan.FromSeconds(_delayBetweenSpawns), cancellationToken: _delayCTS.Token);
