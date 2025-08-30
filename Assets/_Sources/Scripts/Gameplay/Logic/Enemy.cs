@@ -5,12 +5,16 @@ using DG.Tweening;
 using GameClient.GameData;
 using UnicoCaseStudy.Gameplay.Logic;
 using UnicoCaseStudy.Gameplay.Signal;
+using UnicoCaseStudy.Utilities.MonoBehaviourUtilities;
 using UnityEngine;
 
 namespace UnicoCaseStudy
 {
     public class Enemy : BoardItem
     {
+        [SerializeField] private Animator _animator;
+        [SerializeField] private AnimationEventTriggerDetector _animationEventTriggerDetector;
+
         public int EffectiveHealth { get; private set; }
         public int RealHealth { get; private set; }
 
@@ -32,10 +36,13 @@ namespace UnicoCaseStudy
             _enemyConfig = config as EnemyConfig;
             UpdateSortingOrder();
 
+            _animationEventTriggerDetector.AnimEventOccured += OnAnimEventOccured;
             _moveTweenCTS = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
 
             RealHealth = _enemyConfig.Health;
             EffectiveHealth = RealHealth;
+
+            _animator.runtimeAnimatorController = _enemyConfig.AnimatorController;
         }
 
         public void Deactivate()
@@ -45,6 +52,7 @@ namespace UnicoCaseStudy
                 return;
             }
 
+            _animationEventTriggerDetector.AnimEventOccured -= OnAnimEventOccured;
             _moveTweenCTS.Cancel();
             _moveTweenCTS.Dispose();
             _moveTweenCTS = null;
@@ -105,7 +113,24 @@ namespace UnicoCaseStudy
             RealHealth -= damage;
             EffectiveHealth -= damage;
 
+            _moveTween?.Pause();
             if (RealHealth <= 0)
+            {
+                _animator.SetTrigger(AnimationConstants.Death);
+            }
+            else
+            {
+                _animator.SetTrigger(AnimationConstants.Damage);
+            }
+        }
+
+        private void OnAnimEventOccured(string obj)
+        {
+            if (obj.Equals("DamageTaken"))
+            {
+                _moveTween?.Play();
+            }
+            else if (obj.Equals("Death"))
             {
                 Signals.Get<EnemyDiedSignal>().Dispatch(this);
             }

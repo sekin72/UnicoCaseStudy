@@ -18,4 +18,4 @@ MonoBehaviour:
   Damage: 10
   Range: 1
   AttackCooldown: 2
-  Direction: 0
+  Direction: 1

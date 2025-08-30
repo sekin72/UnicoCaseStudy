@@ -15,5 +15,7 @@ namespace UnicoCaseStudy
         public static readonly int Invisible = Animator.StringToHash("Invisible");
         public static readonly int Play = Animator.StringToHash("Play");
         public static readonly int Reset = Animator.StringToHash("Reset");
+        public static readonly int Damage = Animator.StringToHash("Damage");
+        public static readonly int Death = Animator.StringToHash("Death");
     }
 }

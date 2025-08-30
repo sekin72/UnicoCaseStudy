@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Enemy3
   m_EditorClassIdentifier: 
   Sprite: {fileID: 21300004, guid: a5fd1d31c7504cd4083d950f36ed7511, type: 3}
+  AnimatorController: {fileID: 9100000, guid: 1b9dfa6dd694e514ba14681830039a1b, type: 2}
   Health: 5
   Speed: 0.5

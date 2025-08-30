@@ -16,6 +16,6 @@ MonoBehaviour:
   IdleVFXPoolKey: 1501
   PlacementCooldown: 0
   Damage: 1
-  Range: 1
+  Range: 3
   AttackCooldown: 1
   Direction: 0
