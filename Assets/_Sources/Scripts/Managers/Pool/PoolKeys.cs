@@ -14,8 +14,6 @@
         SettingsPopup = 103,
         PausePopup = 104,
 
-        TextTween = 150,
-
         ExternalParticlesSystemView = 500,
         EnvironmentCreatorSystemView = 501,
 
@@ -29,5 +27,11 @@
         IdleVFX1 = 1500,
         IdleVFX2 = 1501,
         IdleVFX3 = 1502,
+
+        Bullet1 = 2000,
+        Bullet2 = 2001,
+        Bullet3 = 2002,
+
+        Impact = 2500,
     }
 }

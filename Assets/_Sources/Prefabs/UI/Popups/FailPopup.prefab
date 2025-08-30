@@ -290,8 +290,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Root: {fileID: 9083475639212752959}
-  _closeButton: {fileID: 4650422138017819491}
   RestartButton: {fileID: 796867375936390058}
+  MMButton: {fileID: 4650422138017819491}
 --- !u!224 &9083475639212752959 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2517515393414423493, guid: ea603a214b96f8b47ad3a39bfa3295d6, type: 3}

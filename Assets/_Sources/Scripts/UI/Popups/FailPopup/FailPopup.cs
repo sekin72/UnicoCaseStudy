@@ -12,18 +12,27 @@ namespace UnicoCaseStudy.UI.Popups.Fail
             await base.Initialize(cancellationToken);
 
             View.RestartButtonClicked += OnRestartClicked;
+            View.MMButtonClicked += OnMMClicked;
         }
 
         public override void Dispose()
         {
             View.RestartButtonClicked -= OnRestartClicked;
+            View.MMButtonClicked -= OnMMClicked;
 
             base.Dispose();
         }
 
         private void OnRestartClicked()
         {
-            AppManager.GetManager<GameplayManager>().RestartLevel();
+            ClosePopup();
+            Data.OnRestartButtonClicked?.Invoke();
+        }
+
+        private void OnMMClicked()
+        {
+            ClosePopup();
+            Data.OnMMButtonClicked?.Invoke();
         }
     }
 }

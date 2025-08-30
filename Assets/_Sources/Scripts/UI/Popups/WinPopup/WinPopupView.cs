@@ -8,20 +8,23 @@ namespace UnicoCaseStudy.UI.Popups.Win
 {
     public class WinPopupView : PopupView
     {
-        [SerializeField] protected CFButton BackToMainMenuButton;
-
-        public event Action BackToMainMenuButtonClicked;
+        [SerializeField] protected CFButton NextLevelButton;
+        [SerializeField] protected CFButton CloseButton;
+        public event Action CloseButtonClicked;
+        public event Action NextLevelButtonClicked;
 
         public override async UniTask Initialize(CancellationToken cancellationToken)
         {
             await base.Initialize(cancellationToken);
 
-            BackToMainMenuButton.onClick.AddListener(() => BackToMainMenuButtonClicked?.Invoke());
+            CloseButton.onClick.AddListener(() => CloseButtonClicked?.Invoke());
+            NextLevelButton.onClick.AddListener(() => NextLevelButtonClicked?.Invoke());
         }
 
         public override void Deactivate()
         {
-            BackToMainMenuButton.onClick.RemoveListener(() => BackToMainMenuButtonClicked?.Invoke());
+            CloseButton.onClick.RemoveListener(() => CloseButtonClicked?.Invoke());
+            NextLevelButton.onClick.RemoveListener(() => NextLevelButtonClicked?.Invoke());
 
             base.Deactivate();
         }

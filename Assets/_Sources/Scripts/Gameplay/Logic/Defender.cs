@@ -4,13 +4,18 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using deVoid.Utils;
+using DG.Tweening;
 using GameClient.GameData;
+using UnicoCaseStudy.Managers.Pool;
 using UnityEngine;
 
 namespace UnicoCaseStudy.Gameplay.Logic
 {
     public class Defender : BoardItem
     {
+        [SerializeField] private SpriteRenderer _fillerRenderer;
+        private PoolManager _poolManager;
+
         private DefenderConfig _defenderConfig;
         private List<Vector2Int> _targetIndexes = new();
         private List<Enemy> _targetsInReach = new();
@@ -18,10 +23,12 @@ namespace UnicoCaseStudy.Gameplay.Logic
         private bool _canAttack = false;
         private CancellationTokenSource _attackCooldownCTS;
         private CancellationTokenSource _makeAttackCTS;
+        private Tween _fillTween;
 
         public void Initialize(CharacterConfig config, GameplayTile attachedGameplayTile, GameObject idleVFX)
         {
             _defenderConfig = config as DefenderConfig;
+            _poolManager = AppManager.GetManager<PoolManager>();
 
             _sprite = config.Sprite;
             _spriteRenderer.sprite = _sprite;
@@ -32,11 +39,17 @@ namespace UnicoCaseStudy.Gameplay.Logic
 
             SetAttachedGameplayTile(attachedGameplayTile);
 
-            SetTargetIndexes();
-            _targetsInReach.Clear();
-
             Signals.Get<EnemyChangedTileSignal>().AddListener(OnEnemyChangedTile);
             Signals.Get<EnemyDiedSignal>().AddListener(OnEnemyDied);
+        }
+
+        public override void SetAttachedGameplayTile(GameplayTile gameplayTile)
+        {
+            base.SetAttachedGameplayTile(gameplayTile);
+
+            SetTargetIndexes();
+            _targetsInReach.Clear();
+            _canAttack = false;
 
             if (_attackCooldownCTS != null)
             {
@@ -52,6 +65,9 @@ namespace UnicoCaseStudy.Gameplay.Logic
                 _makeAttackCTS = null;
             }
 
+            _fillTween?.Kill();
+            _fillerRenderer.gameObject.SetActive(false);
+
             _attackCooldownCTS = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
             _makeAttackCTS = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
 
@@ -61,6 +77,9 @@ namespace UnicoCaseStudy.Gameplay.Logic
 
         public override void Dispose()
         {
+            _fillTween?.Kill();
+            _fillerRenderer.gameObject.SetActive(false);
+
             Signals.Get<EnemyChangedTileSignal>().RemoveListener(OnEnemyChangedTile);
             Signals.Get<EnemyDiedSignal>().RemoveListener(OnEnemyDied);
 
@@ -83,6 +102,14 @@ namespace UnicoCaseStudy.Gameplay.Logic
 
         private async UniTask WaitAttackCooldown()
         {
+            _fillerRenderer.gameObject.SetActive(true);
+            _fillerRenderer.material.SetFloat("_Arc1", 0);
+            _fillTween?.Kill();
+            _fillTween = DOVirtual.Float(0, 360, _defenderConfig.AttackCooldown, (value) =>
+            {
+                _fillerRenderer.material.SetFloat("_Arc1", value);
+            });
+
             IdleVFX.gameObject.SetActive(false);
             _canAttack = false;
             await UniTask.Delay(TimeSpan.FromSeconds(_defenderConfig.AttackCooldown), cancellationToken: _attackCooldownCTS.Token);
@@ -94,14 +121,20 @@ namespace UnicoCaseStudy.Gameplay.Logic
         {
             await UniTask.WaitUntil(() => _canAttack && _targetsInReach.Any(x => x.RealHealth > 0), cancellationToken: _makeAttackCTS.Token);
 
+            WaitAttackCooldown().Forget();
+            MakeAttack().Forget();
+
             var enemy = _targetsInReach
                             .Where(x => x.RealHealth > 0)
                             .OrderBy(x => Vector3.Distance(transform.position, x.transform.position))
                             .FirstOrDefault();
 
-            WaitAttackCooldown().Forget();
-            MakeAttack().Forget();
-            enemy.TakeDamage(_defenderConfig.Damage);
+            var bullet = _poolManager.GetGameObject(_defenderConfig.BulletPoolKey).GetComponent<Bullet>();
+            bullet.Initialize(_defenderConfig.BulletPoolKey,
+                                _defenderConfig.ImpactPoolKey,
+                                this,
+                                _defenderConfig,
+                                enemy);
         }
 
         private void OnEnemyChangedTile(EnemyChangedTileSignalProperties signalProperties)
@@ -130,7 +163,7 @@ namespace UnicoCaseStudy.Gameplay.Logic
                     }
 
                     break;
-                case AttackDirection.EveryDirection:
+                case AttackDirection.All:
                     for (int i = 0; i <= _defenderConfig.Range; i++)
                     {
                         _targetIndexes.Add(AttachedGameplayTile.GameplayIndex + (Vector2Int.left * i));

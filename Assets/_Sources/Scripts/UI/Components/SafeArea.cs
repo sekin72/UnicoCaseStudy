@@ -6,7 +6,7 @@ namespace UnicoCaseStudy.UI.Components
 {
     public class SafeArea : MonoBehaviour
     {
-        public static EdgeInsets MinimumPadding = new(50, 0, 0, 0);
+        public static EdgeInsets MinimumPadding = new(0, 0, 0, 0);
         public static EdgeInsets MaximumPadding = new(2147483647, 2147483647, 0, 2147483647);
 
         public RectTransform RectTransform;

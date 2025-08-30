@@ -100,6 +100,7 @@ namespace UnicoCaseStudy
             var duration = Vector2.Distance(transform.position, target) / _enemyConfig.Speed;
             _moveTween?.Kill();
             _moveTween = transform.DOMove(target, duration).SetEase(Ease.Linear);
+            _moveTween.Play();
 
             await _moveTween.ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken: _moveTweenCTS.Token);
 
@@ -114,13 +115,13 @@ namespace UnicoCaseStudy
             var duration = Vector2.Distance(transform.position, target) / _enemyConfig.Speed;
             _moveTween?.Kill();
             _moveTween = transform.DOMove(target, duration).SetEase(Ease.Linear);
+            _moveTween.Play();
 
             await _moveTween.ToUniTask(TweenCancelBehaviour.KillAndCancelAwait, cancellationToken: _moveTweenCTS.Token);
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamageEffective(int damage)
         {
-            RealHealth -= damage;
             EffectiveHealth -= damage;
 
             _moveTween?.Pause();
@@ -138,6 +139,11 @@ namespace UnicoCaseStudy
             }
         }
 
+        public void TakeDamageReal(int damage)
+        {
+            RealHealth -= damage;
+        }
+
         private void OnAnimEventOccured(string obj)
         {
             if (obj.Equals("DamageTaken"))
@@ -147,10 +153,6 @@ namespace UnicoCaseStudy
             else if (obj.Equals("Death"))
             {
                 Signals.Get<EnemyDiedSignal>().Dispatch(this);
-            }
-            else if (obj.Equals("Walk"))
-            {
-                _soundManager.PlayOneShot(SoundKeys.Walk);
             }
         }
     }

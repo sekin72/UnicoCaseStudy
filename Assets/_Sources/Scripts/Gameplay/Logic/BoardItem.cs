@@ -28,7 +28,7 @@ namespace UnicoCaseStudy.Gameplay.Logic
             }
         }
 
-        public void SetAttachedGameplayTile(GameplayTile gameplayTile)
+        public virtual void SetAttachedGameplayTile(GameplayTile gameplayTile)
         {
             AttachedGameplayTile = gameplayTile;
             UpdateSortingOrder();

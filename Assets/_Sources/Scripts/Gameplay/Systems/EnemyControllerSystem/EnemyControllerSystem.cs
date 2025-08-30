@@ -108,7 +108,6 @@ namespace UnicoCaseStudy.Gameplay.Systems
             enemyBoardItem.StartMovement().Forget();
 
             _soundManager.PlayOneShot(SoundKeys.Alert);
-            _vibrationManager.Vibrate(VibrationType.Warning);
 
             _delayCTS = new CancellationTokenSource();
             await UniTask.Delay(TimeSpan.FromSeconds(_delayBetweenSpawns), cancellationToken: _delayCTS.Token);

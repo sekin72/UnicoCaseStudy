@@ -9,6 +9,8 @@ namespace GameClient.GameData
     public class DefenderConfig : CharacterConfig
     {
         public PoolKeys IdleVFXPoolKey;
+        public PoolKeys BulletPoolKey;
+        public PoolKeys ImpactPoolKey;
 
         public float PlacementCooldown = 0;
         public int Damage;
@@ -20,6 +22,6 @@ namespace GameClient.GameData
     public enum AttackDirection
     {
         Forward,
-        EveryDirection
+        All
     }
 }

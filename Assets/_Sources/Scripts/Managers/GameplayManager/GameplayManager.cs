@@ -7,7 +7,6 @@ using UnicoCaseStudy.Gameplay.UI.Popups.Pause;
 using UnicoCaseStudy.Managers.Loading;
 using UnicoCaseStudy.Managers.Pool;
 using UnicoCaseStudy.Managers.UI;
-using UnicoCaseStudy.Managers.Vibration;
 using UnicoCaseStudy.SceneControllers;
 using UnityEngine;
 
@@ -29,10 +28,16 @@ namespace UnicoCaseStudy.Managers.Gameplay
         private CancellationTokenSource _currentCancellationTokenSource;
 
         private bool _levelActivated;
+        public LevelConfig LevelConfig { get; private set; }
 
         protected override UniTask Initialize(CancellationToken disposeToken)
         {
             return UniTask.CompletedTask;
+        }
+
+        public void SetLevelConfig(LevelConfig levelConfig)
+        {
+            LevelConfig = levelConfig;
         }
 
         public async UniTask CreateGameplay(GameplaySceneController gameplaySceneController)
@@ -102,7 +107,7 @@ namespace UnicoCaseStudy.Managers.Gameplay
         public void OpenPausePopup()
         {
             GameSession.PauseGame();
-            _popupManager.Open<PausePopup, PausePopupData, PausePopupView>(new PausePopupData(null, RestartLevel, ReturnToMainScene, GameSession.ResumeGame),
+            _popupManager.Open<PausePopup, PausePopupData, PausePopupView>(new PausePopupData(RestartLevel, ReturnToMainScene, GameSession.ResumeGame),
                 _currentCancellationTokenSource.Token).Forget();
         }
 
@@ -120,6 +125,7 @@ namespace UnicoCaseStudy.Managers.Gameplay
 
         public void RestartLevel()
         {
+            Deactivate();
             LoadLevel().Forget();
         }
 

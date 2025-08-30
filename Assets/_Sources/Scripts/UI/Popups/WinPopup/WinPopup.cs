@@ -1,6 +1,5 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using UnicoCaseStudy.Managers.Gameplay;
 
 namespace UnicoCaseStudy.UI.Popups.Win
 {
@@ -10,21 +9,28 @@ namespace UnicoCaseStudy.UI.Popups.Win
         {
             await base.Initialize(cancellationToken);
 
-            View.BackToMainMenuButtonClicked += OnBackToMainClicked;
+            View.NextLevelButtonClicked += OnNextLevelClicked;
             View.CloseButtonClicked += OnBackToMainClicked;
         }
 
         public override void Dispose()
         {
-            View.BackToMainMenuButtonClicked -= OnBackToMainClicked;
+            View.NextLevelButtonClicked -= OnNextLevelClicked;
             View.CloseButtonClicked -= OnBackToMainClicked;
 
             base.Dispose();
         }
 
+        private void OnNextLevelClicked()
+        {
+            OnCloseClicked();
+            Data.OnMMButtonClicked?.Invoke();
+        }
+
         private void OnBackToMainClicked()
         {
-            AppManager.GetManager<GameplayManager>().ReturnToMainScene();
+            OnCloseClicked();
+            Data.OnMMButtonClicked?.Invoke();
         }
     }
 }

@@ -6,6 +6,7 @@ using FranticCase.ScriptableObjects;
 using TMPro;
 using UnicoCaseStudy.Managers.Data;
 using UnicoCaseStudy.Managers.Data.Storages;
+using UnicoCaseStudy.Managers.Gameplay;
 using UnicoCaseStudy.Managers.Loading;
 using UnicoCaseStudy.Managers.Sound;
 using UnicoCaseStudy.Managers.UI;
@@ -21,13 +22,14 @@ namespace UnicoCaseStudy.SceneControllers
         private SceneLoadingManager _loadingManager;
         private SoundManager _soundManager;
         private DataManager _dataManager;
+        private GameplayManager _gameplayManager;
 
         [SerializeField] private LevelConfigHolder _levelConfigHolder;
         [SerializeField] private TMP_Dropdown _levelsDropdown;
         [SerializeField] private CFButton _newGameButton;
         [SerializeField] private CFButton _settingsButton;
 
-        private int _selectedLevel;
+        private int _selectedLevelIndex;
 
         public override async UniTask Initialize(CancellationToken cancellationToken)
         {
@@ -37,6 +39,7 @@ namespace UnicoCaseStudy.SceneControllers
             _loadingManager = AppManager.GetManager<SceneLoadingManager>();
             _soundManager = AppManager.GetManager<SoundManager>();
             _dataManager = AppManager.GetManager<DataManager>();
+            _gameplayManager = AppManager.GetManager<GameplayManager>();
         }
 
         public override UniTask Activate(CancellationToken cancellationToken)
@@ -76,9 +79,9 @@ namespace UnicoCaseStudy.SceneControllers
             {
                 GameplayFinished = false,
                 LevelRandomSeed = Mathf.Abs((int)DateTime.Now.Ticks),
-                LevelConfig = _levelConfigHolder.LevelData[_selectedLevel]
             });
 
+            _gameplayManager.SetLevelConfig(_levelConfigHolder.LevelData[_selectedLevelIndex]);
             _loadingManager.LoadLevelScene().Forget();
         }
 
@@ -102,7 +105,7 @@ namespace UnicoCaseStudy.SceneControllers
 
         private void OnSelectedLevelChanged(int index)
         {
-            _selectedLevel = index;
+            _selectedLevelIndex = index;
 
             RefreshLevelsDropdown(index);
         }

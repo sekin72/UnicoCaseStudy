@@ -71,7 +71,7 @@ namespace UnicoCaseStudy.Gameplay
             _lateTickables = ListPool<ILateTickable>.Get();
 
             GameSessionSaveStorage = _dataManager.Load<GameSessionSaveStorage>();
-            LevelConfig = GameSessionSaveStorage.LevelConfig;
+            LevelConfig = _gameplayManager.LevelConfig;
 
             RegisterSystems(_systemsCollection);
 
@@ -81,6 +81,8 @@ namespace UnicoCaseStudy.Gameplay
             }
 
             Signals.Get<LevelFinishedSignal>().AddListener(LevelFinished);
+
+            ResumeGame();
         }
 
         public async UniTask Activate()
@@ -183,7 +185,7 @@ namespace UnicoCaseStudy.Gameplay
                 _soundManager.PlayOneShot(SoundKeys.GameOver);
                 _vibrationManager.Vibrate(VibrationType.Failure);
                 _popupManager.Open<FailPopup, FailPopupData, FailPopupView>(
-                    new FailPopupData(),
+                    new FailPopupData(_gameplayManager.RestartLevel, _gameplayManager.ReturnToMainScene),
                     CancellationTokenSource.Token).Forget();
                 return;
             }
@@ -191,7 +193,7 @@ namespace UnicoCaseStudy.Gameplay
             _soundManager.PlayOneShot(SoundKeys.Success);
             _vibrationManager.Vibrate(VibrationType.Success);
             _popupManager.Open<WinPopup, WinPopupData, WinPopupView>(
-                new WinPopupData(),
+                new WinPopupData(_gameplayManager.ReturnToMainScene),
                 CancellationTokenSource.Token).Forget();
         }
 

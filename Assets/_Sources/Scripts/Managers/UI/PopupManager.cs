@@ -66,8 +66,6 @@ namespace UnicoCaseStudy.Managers.UI
 
             try
             {
-                data.AttachCloseCall(Close);
-
                 var viewPrefab = _poolManager.GetGameObject(data.PoolKey);
                 var popupView = viewPrefab.GetComponent<TV>();
                 var popupController = new TP();

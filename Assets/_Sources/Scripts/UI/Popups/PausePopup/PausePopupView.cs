@@ -16,8 +16,9 @@ namespace UnicoCaseStudy.Gameplay.UI.Popups.Pause
         [SerializeField] protected GameObject SliderObject;
         [SerializeField] protected CFToggleButton VibrationButton;
         [SerializeField] protected GameObject VibrationObject;
-        [SerializeField] protected CFButton SaveButton;
-        [SerializeField] protected CFButton LoadButton;
+
+        [SerializeField] protected Button CloseButton;
+        [SerializeField] protected CFButton RestartButton;
         [SerializeField] protected CFButton MMButton;
 
         public event Action<bool> SoundToggled;
@@ -26,9 +27,9 @@ namespace UnicoCaseStudy.Gameplay.UI.Popups.Pause
 
         public event Action<bool> VibrationToggled;
 
-        public event Action SaveButtonClicked;
+        public event Action CloseButtonClicked;
 
-        public event Action LoadButtonClicked;
+        public event Action RestartButtonClicked;
 
         public event Action MMButtonClicked;
 
@@ -40,8 +41,8 @@ namespace UnicoCaseStudy.Gameplay.UI.Popups.Pause
             VolumeSlider.onValueChanged.AddListener(value => SoundVolumeChanged?.Invoke(value));
             VibrationButton.OnValueChanged.AddListener(isOn => VibrationToggled?.Invoke(isOn));
 
-            SaveButton.onClick.AddListener(() => SaveButtonClicked?.Invoke());
-            LoadButton.onClick.AddListener(() => LoadButtonClicked?.Invoke());
+            CloseButton.onClick.AddListener(() => CloseButtonClicked?.Invoke());
+            RestartButton.onClick.AddListener(() => RestartButtonClicked?.Invoke());
             MMButton.onClick.AddListener(() => MMButtonClicked?.Invoke());
         }
 
@@ -50,9 +51,9 @@ namespace UnicoCaseStudy.Gameplay.UI.Popups.Pause
             SoundButton.OnValueChanged.RemoveAllListeners();
             VibrationButton.OnValueChanged.RemoveAllListeners();
             VolumeSlider.onValueChanged.RemoveAllListeners();
+            CloseButton.onClick.RemoveAllListeners();
+            RestartButton.onClick.RemoveAllListeners();
             MMButton.onClick.RemoveAllListeners();
-            SaveButton.onClick.RemoveAllListeners();
-            LoadButton.onClick.RemoveAllListeners();
 
             base.Dispose();
         }

@@ -4109,7 +4109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Root: {fileID: 3632597183579388764}
-  _closeButton: {fileID: 7636117292756500023}
+  CloseButton: {fileID: 7636117292756500023}
   SliderObject: {fileID: 4163127827930085366}
   SoundButton: {fileID: 5475085530086836340}
   VibrationButton: {fileID: 6062618670558439429}

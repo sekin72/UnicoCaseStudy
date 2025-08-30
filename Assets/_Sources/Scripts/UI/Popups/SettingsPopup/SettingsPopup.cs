@@ -28,12 +28,12 @@ namespace UnicoCaseStudy.UI.Popups.Settings
             View.SetVolume(_settingsManager.GetVolume());
             View.SetVibration(_settingsManager.IsVibrationActive());
 
-            View.CloseButtonClicked += ClosePopup;
+            View.CloseButtonClicked += OnCloseClicked;
         }
 
         public override void Dispose()
         {
-            View.CloseButtonClicked -= ClosePopup;
+            View.CloseButtonClicked -= OnCloseClicked;
 
             View.SoundToggled -= OnSoundToggled;
             View.SoundVolumeChanged -= OnSoundVolumeChanged;

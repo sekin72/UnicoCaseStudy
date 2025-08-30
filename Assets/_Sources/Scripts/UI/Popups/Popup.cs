@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnicoCaseStudy.Managers.UI;
 using UnicoCaseStudy.MVC;
 
 namespace UnicoCaseStudy.UI.Popups
@@ -8,6 +9,7 @@ namespace UnicoCaseStudy.UI.Popups
         where TD : PopupData
         where TV : PopupView
     {
+        private PopupManager _popupManager;
         public string UniqueName { get; private set; }
 
         #region Lifecycle
@@ -17,8 +19,8 @@ namespace UnicoCaseStudy.UI.Popups
 
         public override UniTask Initialize(CancellationToken cancellationToken)
         {
+            _popupManager = AppManager.GetManager<PopupManager>();
             UniqueName = $"{GetType().Name}";
-            View.CloseButtonClicked += ClosePopup;
 
             return UniTask.CompletedTask;
         }
@@ -32,7 +34,6 @@ namespace UnicoCaseStudy.UI.Popups
         public override void Deactivate()
         {
             View.SetVisible(false);
-            View.CloseButtonClicked -= ClosePopup;
         }
 
         public override void Dispose()
@@ -41,25 +42,29 @@ namespace UnicoCaseStudy.UI.Popups
 
         #endregion Lifecycle
 
-        public void SetCloseButtonVisible(bool isVisible)
+        public void TapOutside()
         {
-            View.SetCloseButtonVisible(isVisible);
+            OnTapOutside();
         }
 
-        public virtual void TapOutside()
+        public void GoBack()
+        {
+            OnTapOutside();
+        }
+
+        protected virtual void OnTapOutside()
         {
             ClosePopup();
         }
 
-        public virtual void GoBack()
+        protected virtual void OnCloseClicked()
         {
             ClosePopup();
         }
 
         protected void ClosePopup()
         {
-            Data.OnCloseClicked?.Invoke();
-            Data.CloseCall?.Invoke();
+            _popupManager.Close();
         }
     }
 }

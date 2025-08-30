@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using UnicoCaseStudy.Managers.Vibration;
 using UnicoCaseStudy.UI.Components;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,12 +9,14 @@ namespace UnicoCaseStudy.UI.Popups.Settings
 {
     public class SettingsPopupView : PopupView
     {
+        [SerializeField] protected CFButton CloseButton;
         [SerializeField] protected GameObject SliderObject;
         [SerializeField] protected CFToggleButton SoundButton;
         [SerializeField] protected CFToggleButton VibrationButton;
         [SerializeField] protected GameObject VibrationObject;
         [SerializeField] protected Slider VolumeSlider;
 
+        public event Action CloseButtonClicked;
         public event Action<bool> SoundToggled;
 
         public event Action<float> SoundVolumeChanged;
@@ -26,6 +27,7 @@ namespace UnicoCaseStudy.UI.Popups.Settings
         {
             await base.Initialize(cancellationToken);
 
+            CloseButton.onClick.AddListener(() => CloseButtonClicked?.Invoke());
             SoundButton.OnValueChanged.AddListener(isOn => SoundToggled?.Invoke(isOn));
             VolumeSlider.onValueChanged.AddListener(value => SoundVolumeChanged?.Invoke(value));
             VibrationButton.OnValueChanged.AddListener(isOn => VibrationToggled?.Invoke(isOn));
@@ -33,6 +35,7 @@ namespace UnicoCaseStudy.UI.Popups.Settings
 
         public override void Dispose()
         {
+            CloseButton.onClick.RemoveAllListeners();
             SoundButton.OnValueChanged.RemoveAllListeners();
             VolumeSlider.onValueChanged.RemoveAllListeners();
             VibrationButton.OnValueChanged.RemoveAllListeners();

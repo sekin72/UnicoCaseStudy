@@ -6,16 +6,16 @@ namespace UnicoCaseStudy.Gameplay.UI.Popups.Pause
 {
     public class PausePopupData : PopupData
     {
-        public readonly Action OnSaveButtonClicked;
-        public readonly Action OnLoadButtonClicked;
+        public readonly Action OnRestartButtonClicked;
         public readonly Action OnMMButtonClicked;
+        public readonly Action OnClosed;
 
-        public PausePopupData(Action onSaveButtonClicked, Action onLoadButtonClicked, Action mmButtonClicked, Action onAfterClosed)
-            : base(PoolKeys.PausePopup, true, onAfterClosed)
+        public PausePopupData(Action onRestartButtonClicked, Action mmButtonClicked, Action onClosed)
+            : base(PoolKeys.PausePopup)
         {
-            OnSaveButtonClicked = onSaveButtonClicked;
-            OnLoadButtonClicked = onLoadButtonClicked;
+            OnRestartButtonClicked = onRestartButtonClicked;
             OnMMButtonClicked = mmButtonClicked;
+            OnClosed = onClosed;
         }
     }
 }

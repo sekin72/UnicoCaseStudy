@@ -25,8 +25,9 @@ namespace UnicoCaseStudy.Gameplay.UI.Popups.Pause
             View.SoundToggled += OnSoundToggled;
             View.SoundVolumeChanged += OnSoundVolumeChanged;
             View.VibrationToggled += OnVibrationToggled;
-            View.SaveButtonClicked += OnSaveClicked;
-            View.LoadButtonClicked += OnLoadClicked;
+
+            View.CloseButtonClicked += OnCloseClicked;
+            View.RestartButtonClicked += OnRestartClicked;
             View.MMButtonClicked += OnMMClicked;
 
             View.SetSound(_settingsManager.IsSoundActive());
@@ -39,8 +40,9 @@ namespace UnicoCaseStudy.Gameplay.UI.Popups.Pause
             View.SoundToggled -= OnSoundToggled;
             View.SoundVolumeChanged -= OnSoundVolumeChanged;
             View.VibrationToggled -= OnVibrationToggled;
-            View.SaveButtonClicked -= OnSaveClicked;
-            View.LoadButtonClicked -= OnLoadClicked;
+
+            View.CloseButtonClicked -= OnCloseClicked;
+            View.RestartButtonClicked -= OnRestartClicked;
             View.MMButtonClicked -= OnMMClicked;
 
             base.Dispose();
@@ -76,16 +78,10 @@ namespace UnicoCaseStudy.Gameplay.UI.Popups.Pause
             Data.OnMMButtonClicked?.Invoke();
         }
 
-        private void OnSaveClicked()
-        {
-            Data.OnSaveButtonClicked?.Invoke();
-            ClosePopup();
-        }
-
-        private void OnLoadClicked()
+        private void OnRestartClicked()
         {
             ClosePopup();
-            Data.OnLoadButtonClicked?.Invoke();
+            Data.OnRestartButtonClicked?.Invoke();
         }
     }
 }

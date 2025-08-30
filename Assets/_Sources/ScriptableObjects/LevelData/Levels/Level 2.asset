@@ -50,4 +50,4 @@ MonoBehaviour:
       index: 2
       isKeyRepeated: 0
     dividerPos: 0.33
-  DelayBetweenSpawns: 1
+  DelayBetweenSpawns: 2

@@ -32,6 +32,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b15d7a2db97c454bb6e3190e06b4df9
+    m_Address: Bullet1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3c8a5039689378348badca2c217b2f69
     m_Address: BoardItem
     m_ReadOnly: 0
@@ -57,13 +62,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7571f7ad36fb194479e1b96cd9f1ddc4
+    m_Address: Bullet2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c0e170466c4cae4484999d6abe1cd4f
     m_Address: PathTile
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a1dcf397993426e41839accb73a78b50
+    m_Address: Bullet3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a806e8aee25a47e44b014444d6c29f6e
     m_Address: IdleVFX2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7fd48635dacdbe4a8226478c6939151
+    m_Address: Impact1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

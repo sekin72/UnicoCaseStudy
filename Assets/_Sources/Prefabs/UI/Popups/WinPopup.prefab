@@ -130,7 +130,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7323606453651146181, guid: ea603a214b96f8b47ad3a39bfa3295d6, type: 3}
       propertyPath: m_text
-      value: Next Level
+      value: Main Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7323606453651146181, guid: ea603a214b96f8b47ad3a39bfa3295d6, type: 3}
+      propertyPath: m_fontSize
+      value: 70.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7323606453651146181, guid: ea603a214b96f8b47ad3a39bfa3295d6, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8581574684041390851, guid: ea603a214b96f8b47ad3a39bfa3295d6, type: 3}
       propertyPath: m_Transition
@@ -310,8 +318,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Root: {fileID: 9132210827745286587}
-  _closeButton: {fileID: 6273318848115544258}
-  BackToMainMenuButton: {fileID: 72639413207389862}
+  NextLevelButton: {fileID: 72639413207389862}
+  CloseButton: {fileID: 6273318848115544258}
 --- !u!224 &9132210827745286587 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2517515393414423493, guid: ea603a214b96f8b47ad3a39bfa3295d6, type: 3}
